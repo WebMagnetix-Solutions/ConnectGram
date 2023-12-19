@@ -1,0 +1,15 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body{
+    background: #222;
+}
+
+::-webkit-scrollbar{
+    display: none;
+}
+
+*{
+    font-family:cursive ;
+}
