@@ -22,10 +22,8 @@ const Login = () => {
         e.preventDefault()
         const response = await userLogin(formData)
         if (response.token) {
-            alert(response.message)
-            console.log(response);
             setAuth(response.token, response.user)
-            navigate("/")
+            navigate("/", {replace: true})
         } else {
             alert(response)
         }

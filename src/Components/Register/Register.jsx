@@ -24,10 +24,8 @@ const Signup = () => {
         e.preventDefault()
         const response = await userSignup(formData)
         if (response.token) {
-            alert(response.message)
-            console.log(response);
             setAuth(response.token, response.user)
-            navigate("/")
+            navigate("/", {replace: true})
         } else {
             alert(response)
         }
@@ -44,7 +42,7 @@ const Signup = () => {
                 <input type="text" name="email" value={formData.email} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Email" className="w-full mb-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
                 <input type="password" name="password" value={formData.password} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Password" className="w-full mb-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
                 <input type="password" name="confirm_password" value={formData.confirm_password} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Confirm Password" className="w-full mb-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
-                <button className="bg-blue-900 text-white w-full p-1 rounded-xl bg-opacity-90 text-lg">Login</button>
+                <button className="bg-blue-900 text-white w-full p-1 rounded-xl bg-opacity-90 text-lg">Register</button>
                 
                 <div className="flex flex-col gap-2 text-white text-center mt-5">
                     <p>Already have an account? <span onClick={()=>navigate("/login")} className="cursor-pointer">Log In</span></p>
