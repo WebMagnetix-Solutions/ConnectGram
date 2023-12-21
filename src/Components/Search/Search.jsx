@@ -32,7 +32,7 @@ const Search = () => {
                                     </div>
                                     <div className="flex justify-between items-center flex-col">
                                         <h2>{item.name}</h2>
-                                        <p className="text-xs">@{item.username}</p>
+                                        <p className="text-xs flex items-center">@{item.username} { item.verified && <img className="w-3 h-3 mx-1 mt-0.5 " src={ import.meta.env.VITE_VERIFY } /> }</p>
                                     </div>
                                 </div>
                             )

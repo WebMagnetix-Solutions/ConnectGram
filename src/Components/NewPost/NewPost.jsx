@@ -44,7 +44,7 @@ const NewPost = () => {
             toast.error("Max tags reached!")
             return
         }
-        if (formData.tags.some(item => item.toLowerCase() === tag.toLowerCase())) {
+        if (formData.tags.some(item => item.toLowerCase()  === `#${ tag.toLowerCase()}`)) {
             toast.error("Tag already exist!")
             return
         } else {
@@ -116,9 +116,9 @@ const NewPost = () => {
                             {
                                 formData.tags.length > 0 && <div className="flex flex-row flex-wrap gap-2 mb-3">
                                 {
-                                    formData?.tags.map(item => {
+                                    formData?.tags.map((item, index) => {
                                         return (
-                                            <div className="p-1 px-2 flex items-center bg-black relative bg-opacity-30 rounded-full" key={item}>
+                                            <div className="p-1 px-2 flex items-center bg-black relative bg-opacity-30 rounded-full" key={index}>
                                                 {item}
                                                 <i className="fa fa-close text-red-700 ms-2 cursor-pointer" onClick={()=>removeTag(item)}/>
                                             </div>

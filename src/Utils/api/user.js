@@ -35,3 +35,25 @@ export const getMe = async (id) => {
         return err.response.data.message
     }
 }
+
+export const profileEdit = async (formData) => {
+    try {
+        const { data } = await api.patch(`/user/profile/edit`, formData, {
+            headers: {
+                "Content-Type": "multi-part/form-data"
+            }
+        })
+        return data
+    } catch (err) {
+        return err.response.data.message
+    }
+}
+
+export const suggestUsers = async (user_id) => {
+    try {
+        const { data } = await api.get(`/user/suggestions/${user_id}`)
+        return data
+    } catch (err) {
+        return err.response.data.message
+    }
+}

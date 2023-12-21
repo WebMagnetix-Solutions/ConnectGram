@@ -18,5 +18,6 @@ export const setAuth = (access_token, user) => {
 }
 
 export const removeAuth = () => {
-    return localStorage.removeItem("__access_token__")
+    localStorage.removeItem("__access_token__")
+    localStorage.removeItem("__user__")
 }

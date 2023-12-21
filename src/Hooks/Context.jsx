@@ -4,10 +4,10 @@ const MyContext = createContext()
 
 export const MyProvider = ({ children }) => {
     
-    const [selectedOption, setSelectedOption] = useState("Home")
+    const [isLoading, setIsLoading] = useState(true)
 
     return (
-        <MyContext.Provider value={{ selectedOption, setSelectedOption }}>
+        <MyContext.Provider value={{ isLoading, setIsLoading }}>
             {children}
         </MyContext.Provider>
     )
