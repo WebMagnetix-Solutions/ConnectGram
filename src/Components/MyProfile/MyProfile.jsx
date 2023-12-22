@@ -4,6 +4,7 @@ import { getMyData, removeAuth } from "../../Auth"
 import MyPosts from "./MyPosts"
 import { useNavigate } from "react-router-dom"
 import EditProfile from "../Modal/EditProfile"
+import toast from "react-hot-toast"
 
 const MyProfile = () => {
     
@@ -16,7 +17,16 @@ const MyProfile = () => {
         const fetchData = async () => {
             const user = getMyData()
             const response = await getMe(user._id)
-            setMyData(response)
+            if (response.result) {
+                setMyData(response.result)
+            } else {
+                if (response === 401) {
+                    removeAuth()
+                    navigate("/login")
+                } else {
+                    toast.error(response)
+                }
+            }
         }
         fetchData()
     }, [])

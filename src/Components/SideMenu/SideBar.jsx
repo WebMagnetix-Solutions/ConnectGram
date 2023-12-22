@@ -6,6 +6,10 @@ const SideBar = () => {
     const currentPage = window.location.pathname
     const navigate = useNavigate()
 
+    const handleSocket = () => {
+        navigate("/messenger")
+    }
+
     return (
         <Fragment>
             <div className="hidden sm:flex flex-col md:justify-around justify-center sm:col-span-1 text-xl md:text-base md:col-span-3 lg:col-span-2 h-screen bg-[#333] bg-opacity-30 w-full items-center">
@@ -22,7 +26,7 @@ const SideBar = () => {
                     <div onClick={() => { navigate("/new-post") }} className={`flex bg-black ${currentPage =="/new-post" ? `bg-opacity-30` : `bg-opacity-10`} items-center mb-4 md:mb-1 hover:text-black p-2 hover:bg-white rounded-full w-full justify-center md:ps-5 md:justify-start cursor-pointer transition-all duration-300`}>
                         <i className="far fa-square-plus md:mr-2"></i> <span className="hidden md:block">Post</span>
                     </div>
-                    <div className={`flex bg-black bg-opacity-10 items-center mb-4 md:mb-1 hover:text-black p-2 hover:bg-white rounded-full w-full justify-center md:ps-5 md:justify-start cursor-pointer transition-all duration-300`}>
+                    <div onClick={() => { handleSocket(); }} className={`flex bg-black bg-opacity-10 items-center mb-4 md:mb-1 hover:text-black p-2 hover:bg-white rounded-full w-full justify-center md:ps-5 md:justify-start cursor-pointer transition-all duration-300`}>
                         <i className="fab fa-facebook-messenger md:mr-2"></i> <span className="hidden md:block">Messages</span>
                     </div>
                     <div onClick={() => { navigate("/my-profile") }} className={`flex bg-black ${currentPage =="/my-profile" ? `bg-opacity-30` : `bg-opacity-10`} items-center mb-4 md:mb-1 hover:text-black p-2 hover:bg-white rounded-full w-full justify-center md:ps-5 md:justify-start cursor-pointer transition-all duration-300`}>
@@ -41,7 +45,7 @@ const SideBar = () => {
                 <div onClick={() => { navigate("/new-post") }} className={`flex items-center hover:text-black bg-[#222] ${currentPage =="/new-post" ? `bg-opacity-90` : `bg-opacity-0`} hover:bg-white rounded-full w-full justify-center cursor-pointer transition-all duration-300`}>
                     <i className="far fa-square-plus"></i>
                 </div>
-                <div className={`flex items-center hover:text-black hover:bg-white rounded-full w-full justify-center cursor-pointer transition-all duration-300`}>
+                <div onClick={() => { handleSocket(); }} className={`flex items-center hover:text-black hover:bg-white rounded-full w-full justify-center cursor-pointer transition-all duration-300`}>
                     <i className="fab fa-facebook-messenger"></i>
                 </div>
                 <div onClick={() => { navigate("/my-profile") }} className={`flex items-center hover:text-black bg-[#222] ${currentPage =="/my-profile" ? `bg-opacity-90` : `bg-opacity-0`} hover:bg-white rounded-full w-full justify-center cursor-pointer transition-all duration-300`}>

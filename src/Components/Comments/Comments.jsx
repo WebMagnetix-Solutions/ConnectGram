@@ -2,21 +2,30 @@
 import { useEffect, useState } from "react"
 import { addComment, commentLikeOrDislike, getComments } from "../../Utils/api/post"
 import toast from "react-hot-toast"
-import { getMyData } from "../../Auth"
+import { getMyData, removeAuth } from "../../Auth"
 import { getMoment } from "../../Utils/Helper/Helper"
+import { useNavigate } from "react-router-dom"
 
-const Comments = ({ post, setShowComment }) => {
+const Comments = ({ post, setShowComment, posts, setPosts }) => {
 
     const [comments, setComments] = useState([])
     const [commentText, setCommentText] = useState("")
     const userInfo = getMyData()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await getComments(post)
             if (response.result) {
                 setComments(response.result)
-            }
+            } else {
+                if (response === 401) {
+                    removeAuth()
+                    navigate("/login")
+                } else {
+                    toast.error(response)
+                }
+            }  
         }
         post && fetchData()
     }, [post])
@@ -33,10 +42,25 @@ const Comments = ({ post, setShowComment }) => {
         const response = await addComment(formData)
         if (response.result) {
             setCommentText("")
+            if (Array.isArray(posts)) {
+                setPosts(posts.map(item => {
+                        if (item._id === post) {
+                            return {...item, comments: response.result}
+                        }
+                        return item
+                    }
+                ))
+            } else {
+                setPosts({...posts, comments: response.result})
+            }
             setComments(response.result)
         } else {
-            toast.error(response)
-            return
+            if (response === 401) {
+                removeAuth()
+                navigate("/login")
+            } else {
+                toast.error(response)
+            }
         }
     }
 
@@ -45,8 +69,12 @@ const Comments = ({ post, setShowComment }) => {
         if (response.likes) {
             setComments(comments.map(item => item._id === id ? { ...item, likes: response.likes } : item))
         } else {
-            toast.error("Error happend")
-            return
+            if (response === 401) {
+                removeAuth()
+                navigate("/login")
+            } else {
+                toast.error(response)
+            }
         }
     }
 
@@ -86,7 +114,7 @@ const Comments = ({ post, setShowComment }) => {
                                                     <p className="text-[9px]">{item.likes.length}</p>
                                                 </div>
                                             </div>
-                                            <p className="text-xs mb-5 mt-[-5px] cursor-pointer">{item.message}</p>
+                                            <p className="text-xs mb-5 mt-[-8px] cursor-pointer">{item.message}</p>
                                         </div>
                                     </div>
                                 </div>

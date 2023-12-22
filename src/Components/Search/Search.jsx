@@ -1,15 +1,28 @@
 import { useState } from "react"
 import { userList } from "../../Utils/api/user"
+import { removeAuth } from "../../Auth"
+import { useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
 
 const Search = () => {
 
     const [searchResult, setSearchResult] = useState([])
     const [search, setSearch] = useState("")
+    const navigate = useNavigate()
 
     const getSearchResult = async () => {
         if (search) {
-            const result = await userList(search)
-            setSearchResult(result)
+            const response = await userList(search)
+            if (response.result) {
+                setSearchResult(response.result)
+            } else {
+                if (response === 401) {
+                    removeAuth()
+                    navigate("/login")
+                } else {
+                    toast.error(response)
+                }
+            }
         }
     }
 

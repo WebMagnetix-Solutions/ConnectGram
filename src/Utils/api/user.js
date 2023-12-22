@@ -5,6 +5,9 @@ export const userLogin = async ({username, password}) => {
         const { data } = await api.get(`/user/login?username=${username}&password=${password}`)
         return data
     } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
         return err.response.data.message
     }
 }
@@ -12,8 +15,11 @@ export const userLogin = async ({username, password}) => {
 export const userList = async (prefix=null) => {
     try {
         const { data } = await api.get(`/user/users?prefix=${prefix}`)
-        return data.result
+        return data
     } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
         return err.response.data.message
     }
 }
@@ -23,6 +29,9 @@ export const userSignup = async (userData) => {
         const { data } = await api.post(`/user/signup`, userData)
         return data
     } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
         return err.response.data.message
     }
 }
@@ -30,8 +39,11 @@ export const userSignup = async (userData) => {
 export const getMe = async (id) => {
     try {
         const { data } = await api.get(`/user/getMe/${id}`)
-        return data.result
+        return data
     } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
         return err.response.data.message
     }
 }
@@ -45,6 +57,9 @@ export const profileEdit = async (formData) => {
         })
         return data
     } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
         return err.response.data.message
     }
 }
@@ -54,6 +69,21 @@ export const suggestUsers = async (user_id) => {
         const { data } = await api.get(`/user/suggestions/${user_id}`)
         return data
     } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
+        return err.response.data.message
+    }
+}
+
+export const followOrUnfollow = async (user_id, to_id) => {
+    try {
+        const { data } = await api.patch(`/user/follow`, {user_id, to_id})
+        return data
+    } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
         return err.response.data.message
     }
 }

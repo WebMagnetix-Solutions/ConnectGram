@@ -1,20 +1,32 @@
 import { useEffect, useState } from "react"
-import { getMyData } from "../../Auth"
+import { getMyData, removeAuth } from "../../Auth"
 import { getMyPosts } from "../../Utils/api/post"
+import { useNavigate } from "react-router-dom"
+import toast from "react-hot-toast"
 
 const MyPosts = (prop) => {
 
     const [myPosts, setMyPosts] = useState([])
     const userInfo = getMyData()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             const user = getMyData()
             const response = await getMyPosts(user._id)
-            if (prop.type == "saved") {
-                setMyPosts(response.filter(item => item.saved.includes(userInfo._id)))
+            if (response.result) {
+                if (prop.type == "saved") {
+                    setMyPosts(response.result.filter(item => item.saved.includes(userInfo._id)))
+                } else {
+                    setMyPosts(response.result.filter(item => item.type === prop.type))
+                }
             } else {
-                setMyPosts(response.filter(item => item.type === prop.type))
+                if (response === 401) {
+                    removeAuth()
+                    navigate("/login")
+                } else {
+                    toast.error(response)
+                }
             }
         }
         fetchData()
@@ -25,7 +37,7 @@ const MyPosts = (prop) => {
             {
                 myPosts.map(item => {
                     return (
-                        <div key={item._id} className="relative group"> 
+                        <div key={item._id} className="relative group" onClick={()=>navigate(`/post?view=${item._id}`)}> 
                             <span className="absolute flex items-center justify-evenly w-full top-1/2 left-1/2 translate-x-[-50%] opacity-0 group-hover:opacity-100 transition-opacity duration-500 translate-y-[-50%] group-hover:">
                                 <p>{item.likes.length} <i className="fa fa-heart" /></p>
                                 <p>{item.comments.length} <i className="fa fa-comment"/></p>

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import toast from "react-hot-toast"
 import { createPost } from "../../Utils/api/post"
 import { getMyData } from "../../Auth"
@@ -15,7 +15,8 @@ const NewPost = () => {
     useEffect(() => {
         
         if (postFile) {
-            if (postFile.type.split("/")[0] === "video") {
+            const fileType = postFile.type.split("/")[0]
+            if ( fileType === "video") {
                 const video = document.createElement('video');
                 video.preload = 'metadata';
                 video.onloadedmetadata = () => {
@@ -25,11 +26,14 @@ const NewPost = () => {
                     }
                 };
                 video.src = URL.createObjectURL(postFile);
-            } else {
+            } else if(fileType === "image"){
                 if (postFile.size / (1024 * 1024) > 5) {
                     toast.error("Image should be less than 5MB")
                     setPostFile(null)
                 }
+            } else {
+                toast.error("Images/Videos alloweded")
+                setPostFile(null)
             }
         }
         
@@ -90,13 +94,15 @@ const NewPost = () => {
         );
     }
 
+    const selectedFileSource = useMemo(() => postFile && URL.createObjectURL(postFile), [postFile]);
+
     return (
         <div className="w-full h-screen overflow-y-auto pb-16 sm:pb-4">
             <div className="flex lg:flex-row flex-col justify-between w-full px-2 sm:px-6 lg:px-0">
                 <label className="w-full justify-center flex relative cursor-pointer mt-6 rounded-xl">
                     {!postFile && <img alt="not selected" src="./no-image.png"/>}
-                    {postFile && postFile.type.split("/")[0] === "image" && <img src={URL.createObjectURL(postFile)} alt="select image" className="w-96 md:w-[500px] lg:w-[370px] xl:w-[450px] object-contain rounded-xl" />}
-                    {postFile && postFile.type.split("/")[0] === "video" && <video autoPlay src={URL.createObjectURL(postFile)} alt="select video" className="w-96 md:w-[500px] lg:w-[370px] xl:w-[450px] object-contain rounded-xl" />}
+                    {postFile && postFile.type.split("/")[0] === "image" && <img src={selectedFileSource} alt="select image" className="w-96 md:w-[500px] lg:w-[370px] xl:w-[450px] object-contain rounded-xl" />}
+                    {postFile && postFile.type.split("/")[0] === "video" && <video src={selectedFileSource} autoPlay alt="select video" className="w-96 md:w-[500px] lg:w-[370px] xl:w-[450px] object-contain rounded-xl" />}
                     <input type="file" className="hidden absolute" onChange={e => setPostFile(e.target.files[0])}/>
                 </label>
                 <div className="w-full flex justify-center mr-10 sm:mt-10">

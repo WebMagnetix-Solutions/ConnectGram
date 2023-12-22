@@ -1,21 +1,48 @@
 import { useEffect, useState } from "react"
-import { suggestUsers } from "../../Utils/api/user"
-import { getMyData } from "../../Auth"
+import { followOrUnfollow, suggestUsers } from "../../Utils/api/user"
+import { getMyData, removeAuth } from "../../Auth"
+import toast from "react-hot-toast"
+import { useNavigate } from "react-router-dom"
 
 const HomeSuggestions = () => {
 
     const [suggestions, setSuggestions] = useState([])
     const userInfo = getMyData()
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await suggestUsers(userInfo._id)
             if (response.result) {
                 setSuggestions(response.result)
+            } else {
+                if (response === 401) {
+                    removeAuth()
+                    navigate("/login")
+                } else {
+                    toast.error(response)
+                }
             }
+            
         }
         fetchData()
     }, [])
+
+    const manageFollow = async (user_id, to_id) => {
+        const response = await followOrUnfollow(user_id, to_id)
+        if (response.following){
+            setSuggestions(suggestions.filter(item => {
+                return item._id !== to_id
+            }))
+        } else {
+            if (response === 401) {
+                removeAuth()
+                navigate("/login")
+            } else {
+                toast.error(response)
+            }
+        }
+    }
 
     return (
         <div className="hidden lg:flex lg:col-span-4 text-black bg-[#333] bg-opacity-30 justify-center overflow-y-auto">
@@ -38,7 +65,7 @@ const HomeSuggestions = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <button className="p-1 px-2 bg-blue-900 rounded-xl">{item.following?.includes(userInfo._id) ? "Follow Back" : "Follow"}</button>
+                                        <button className="p-1 px-2 bg-blue-900 rounded-xl" onClick={async () => await manageFollow(userInfo._id, item._id)}>{item.following?.includes(userInfo._id) ? "Follow Back" : "Follow"}</button>
                                     </div>
                                 </div>
                             )

@@ -1,7 +1,9 @@
+import ChatPage from "../../Pages/ChatPage"
 import Feed from "../Feed/Feed"
 import MyProfile from "../MyProfile/MyProfile"
 import NewPost from "../NewPost/NewPost"
 import Search from "../Search/Search"
+import SinglePost from "../SinglePost/SinglePost"
 
 const Home = () => {
 
@@ -13,7 +15,9 @@ const Home = () => {
                 currentPage === "/" ? <Feed /> :
                 currentPage === "/search" ? <Search /> : 
                 currentPage === "/new-post" ? <NewPost /> : 
-                currentPage === "/my-profile" ? <MyProfile /> : null
+                currentPage === "/my-profile" ? <MyProfile /> : 
+                currentPage === "/post" ? <SinglePost /> : 
+                currentPage === "/messenger" ? <ChatPage /> : null
             }
         </div>
     )

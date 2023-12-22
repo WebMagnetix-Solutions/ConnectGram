@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react"
 import { deletePost, getFollowingPost, likeOrDislike, saveOrUnSave } from "../../Utils/api/post"
-import { getMyData } from "../../Auth"
+import { getMyData, removeAuth } from "../../Auth"
 import toast from "react-hot-toast"
 import Comments from "../Comments/Comments"
+import { useNavigate } from "react-router-dom"
+import { copyToClipboard } from "../../Utils/Helper/Helper"
 
 const Feed = () => {
 
@@ -10,11 +12,21 @@ const Feed = () => {
     const userInfo = getMyData()
     const [menuOptions, setMenuOptions] = useState("")
     const [showComment, setShowComment] = useState("")
+    const navigate = useNavigate()
 
     useEffect(() => {
         const fetchData = async () => {
             const response = await getFollowingPost(userInfo._id)
-            setPosts(response)
+            if (response.result) {
+                setPosts(response.result)
+            } else {
+                if (response === 401) {
+                    removeAuth()
+                    navigate("/login")
+                } else {
+                    toast.error(response)
+                }
+            }
         }
         fetchData()
     }, [])
@@ -32,8 +44,12 @@ const Feed = () => {
         if (response.likes) {
             setPosts(posts.map(item => item._id === post_id ? { ...item, likes: response.likes } : item))
         } else {
-            toast.error("Error happend")
-            return
+            if (response === 401) {
+                removeAuth()
+                navigate("/login")
+            } else {
+                toast.error(response)
+            }
         }
     }
 
@@ -42,8 +58,12 @@ const Feed = () => {
         if (response.saved) {
             setPosts(posts.map(item => item._id === post_id ? { ...item, saved: response.saved } : item))
         } else {
-            toast.error("Error happend")
-            return
+            if (response === 401) {
+                removeAuth()
+                navigate("/login")
+            } else {
+                toast.error(response)
+            }
         }
     }
 
@@ -54,7 +74,14 @@ const Feed = () => {
                 setPosts(posts.filter(item => item._id !== postid))
                 return response.message
             },
-            error: (response) => response
+            error: (response) => {
+                if (response === 401) {
+                    removeAuth()
+                    navigate("/login")
+                } else {
+                    return response
+                }
+            }
         })
     }
 
@@ -83,7 +110,8 @@ const Feed = () => {
                                 <div className=" cursor-pointer relative">
                                     <i className="fa fa-ellipsis text-white text-opacity-70" onClick={()=>showOptions(item._id)}></i>
                                     <section className={`absolute bg-black z-50 text-white p-3 px-5 ${menuOptions===item._id ? `right-3` : `right-[-10rem]`} transition-all duration-500 top-4 rounded-xl whitespace-nowrap`}>
-                                        <p><i className="fa fa-copy mb-2"/> Copy Link</p>
+                                        <p onClick={()=> copyToClipboard(window.location.href)}><i className="fa fa-copy mb-2" /> Copy</p>
+                                        <p onClick={()=>navigate(`/post?view=${item._id}`)}><i className="fa fa-eye mb-2"/> View</p>
                                         {
                                             userInfo._id == item.user[0]._id && <p className="text-red-600" onClick={async ()=> await removePost(item._id, item.url, item.type)}><i className="fa fa-trash"/> Delete</p>
                                         }
@@ -100,7 +128,7 @@ const Feed = () => {
                             <div className="mt-2 flex justify-between text-white text-opacity-70">
                                 
                                 <div className="flex justify-between gap-3 text-lg">
-                                    <i className={`fa${item.likes?.includes(userInfo._id) ? `s` : `r`} fa-heart cursor-pointer`} onClick={async () => await updateLike(item._id, userInfo._id)}></i>
+                                    <i className={`fa${item.likes?.includes(userInfo._id) ? `s text-red-500` : `r`} fa-heart cursor-pointer`} onClick={async () => await updateLike(item._id, userInfo._id)}></i>
                                     <i className="far fa-comment cursor-pointer" onClick={() => setShowComment(item._id)}></i>
                                     <i className="far fa-paper-plane"></i>
                                 </div>
@@ -121,7 +149,7 @@ const Feed = () => {
                     )
                 })
             }
-            <Comments post={showComment} setShowComment={setShowComment} />
+            <Comments posts={posts} setPosts={setPosts} post={showComment} setShowComment={setShowComment} />
         </div>
 
     )
