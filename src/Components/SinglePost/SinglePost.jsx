@@ -136,7 +136,7 @@ const SinglePost = () => {
                                 <div className="mt-2 flex justify-between text-white text-opacity-70">
                                     
                                     <div className="flex justify-between gap-3 text-lg">
-                                        <i className={`fa${singlePost.likes?.includes(userInfo._id) ? `s` : `r`} fa-heart cursor-pointer`} onClick={async () => await updateLike(singlePost._id, userInfo._id)}></i>
+                                        <i className={`fa${singlePost.likes?.includes(userInfo._id) ? `s text-red-500` : `r`} fa-heart cursor-pointer`} onClick={async () => await updateLike(singlePost._id, userInfo._id)}></i>
                                         <i className="far fa-comment cursor-pointer" onClick={() => setShowComment(singlePost._id)}></i>
                                         <i className="far fa-paper-plane"></i>
                                     </div>
