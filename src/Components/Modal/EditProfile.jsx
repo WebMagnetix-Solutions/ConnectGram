@@ -67,7 +67,7 @@ const EditProfile = ({ setMyData, myData, setEdit, isEdit }) => {
     }, [])
 
     return (
-        <div className={`flex absolute z-50 justify-center h-screen duration-500 transition-all ${isEdit ? `bg-black bg-opacity-40` : `bg-none bg-opacity-0 pointer-events-none`}`}>
+        <div className={`flex w-full sm:w-11/12 md:w-9/12 lg:w-6/12 absolute z-50 justify-center h-screen duration-500 transition-all ${isEdit ? `bg-black bg-opacity-40` : `bg-none bg-opacity-0 pointer-events-none`}`}>
             <div className={` mt-10 px-5 w-full absolute duration-500 transition-all ${isEdit ? `top-0` : `top-[-50rem]`} sm:w-[500px]`}>
                 <form onSubmit={handleFormData} className="w-full p-3 bg-[#222] shadow text-white shadow-black rounded-3xl">
                     <h1 className="text-lg text-center">Edit Profile</h1>
