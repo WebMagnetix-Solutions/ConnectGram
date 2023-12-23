@@ -68,7 +68,7 @@ export const getMyPosts = async (id) => {
 export const getSavedPosts = async (id) => {
     try {
         const { data } = await api.get(`/post/saved/${id}`)
-        return data.result
+        return data
     } catch (err) {
         if(err.response.status===401){
             return 401
