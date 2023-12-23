@@ -35,7 +35,7 @@ const SideBar = () => {
                 </div>
             </div>
 
-            <div className="w-screen sm:hidden bg-[#1c1c1c] text-white h-14 z-10 absolute bottom-0 flex text-xl">
+            <div className="w-screen sm:hidden bg-[#1c1c1c] text-white h-14 z-10 fixed bottom-0 flex text-xl">
                 <div onClick={() => { navigate("/") }} className={`flex items-center bg-[#222] ${currentPage =="/" ? `bg-opacity-90` : `bg-opacity-0`} hover:text-black hover:bg-white rounded-full w-full justify-center cursor-pointer transition-all duration-300`}>
                     <i className="fa fa-home"></i>
                 </div>
