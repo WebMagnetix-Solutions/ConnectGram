@@ -39,7 +39,7 @@ const Search = () => {
                     {
                         searchResult.map((item) => {
                             return (
-                                <div key={item._id} className="bg-[#333] bg-opacity-30 rounded-xl p-2 sm:p-5">
+                                <div key={item._id} onClick={() => navigate(`/user?username=${item.username}`)} className="cursor-pointer bg-[#333] bg-opacity-30 rounded-xl p-2 sm:p-5">
                                     <div className="flex justify-center">
                                         <img src={item.pic} alt={item.username} className="w-14 h-14 rounded-full" />
                                     </div>

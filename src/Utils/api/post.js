@@ -65,6 +65,18 @@ export const getMyPosts = async (id) => {
     }
 }
 
+export const getUserPostByUsername = async (username) => {
+    try {
+        const { data } = await api.get(`/post/get-post-by-username?username=${username}`)
+        return data
+    } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
+        return err.response.data.message
+    }
+}
+
 export const getSavedPosts = async (id) => {
     try {
         const { data } = await api.get(`/post/saved/${id}`)

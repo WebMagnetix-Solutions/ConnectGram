@@ -1,6 +1,6 @@
 import { api } from "../../api_call"
 
-export const createChat = async ({user_id, to_id}) => {
+export const createChat = async (user_id, to_id) => {
     try {
         const { data } = await api.post(`/chat/chat`, { user_id, to_id })
         return data

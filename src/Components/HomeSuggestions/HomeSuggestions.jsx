@@ -55,7 +55,7 @@ const HomeSuggestions = () => {
                         suggestions.filter(item => item._id !== userInfo._id).map((item, index) => {
                             return (
                                 <div key={index} className="bg-[#333] mb-3 w-[300px] xl:w-[360px] flex justify-between items-center px-4 rounded-xl p-2 bg-opacity-30 text-white text-opacity-70">
-                                    <div className="flex items-center justify-between">
+                                    <div className="flex items-center justify-between cursor-pointer" onClick={()=>navigate(`/user?username=${item.username}`)}>
                                         <div>
                                             <img src={item.pic} alt={ item.username } className="w-12 h-12 rounded-full"/>
                                         </div>

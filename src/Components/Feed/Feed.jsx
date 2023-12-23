@@ -97,11 +97,11 @@ const Feed = () => {
                                 <div className="flex items-center mb-2">
 
                                     <div className="cursor-pointer">
-                                        <img src={item.user[0].pic} alt={item.user[0].username} className="w-10 h-10 rounded-full" />
+                                        <img src={item.user[0].pic} alt={item.user[0].username} onClick={()=>navigate(`/user?username=${item.user[0].username}`)} className="w-10 h-10 cursor-pointer rounded-full" />
                                     </div>
 
                                     <div className="flex ml-1 flex-col text-white text-opacity-70 mt-[-5px]">
-                                        <span className="text-base flex items-center cursor-pointer">{item.user[0].username} {item.user[0].verified && <img className="w-3 h-3 mx-1 mt-0.5 " src={import.meta.env.VITE_VERIFY} />}</span>
+                                        <span onClick={()=>navigate(`/user?username=${item.user[0].username}`)} className="text-base flex items-center cursor-pointer">{item.user[0].username} {item.user[0].verified && <img className="w-3 h-3 mx-1 mt-0.5 " src={import.meta.env.VITE_VERIFY} />}</span>
                                         <span className="text-[10px] cursor-pointer">{ item.location }</span>
                                     </div>
 
@@ -109,7 +109,7 @@ const Feed = () => {
 
                                 <div className=" cursor-pointer relative">
                                     <i className="fa fa-ellipsis text-white text-opacity-70" onClick={()=>showOptions(item._id)}></i>
-                                    <section className={`absolute bg-black z-50 text-white p-3 px-5 ${menuOptions===item._id ? `right-3` : `right-[-10rem]`} transition-all duration-500 top-4 rounded-xl whitespace-nowrap`}>
+                                    <section className={`absolute bg-black z-50 text-white p-3 px-5 right-3 ${menuOptions===item._id ? `opacity-100 pointer-events-auto` : `opacity-0 pointer-events-none`} transition-all duration-500 top-4 rounded-xl whitespace-nowrap`}>
                                         <p onClick={()=> copyToClipboard(window.location.href)}><i className="fa fa-copy mb-2" /> Copy</p>
                                         <p onClick={()=>navigate(`/post?view=${item._id}`)}><i className="fa fa-eye mb-2"/> View</p>
                                         {

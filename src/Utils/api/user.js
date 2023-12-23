@@ -85,6 +85,18 @@ export const getMe = async (id) => {
     }
 }
 
+export const getUserByUsername = async (username) => {
+    try {
+        const { data } = await api.get(`/user/user?username=${username}`)
+        return data
+    } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
+        return err.response.data.message || err
+    }
+}
+
 export const profileEdit = async (formData) => {
     try {
         const { data } = await api.patch(`/user/profile/edit`, formData, {

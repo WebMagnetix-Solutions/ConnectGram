@@ -106,11 +106,11 @@ const SinglePost = () => {
                                     <div className="flex items-center singlePosts-center mb-2">
 
                                         <div className="cursor-pointer">
-                                            <img src={singlePost.user[0]?.pic} alt={singlePost.user[0]?.username} className="w-10 h-10 rounded-full" />
+                                            <img src={singlePost.user[0]?.pic} alt={singlePost.user[0]?.username} onClick={()=>navigate(`/user?username=${singlePost.user[0].username}`)} className="w-10 h-10 cursor-pointer rounded-full" />
                                         </div>
 
                                         <div className="flex ml-1 flex-col text-white text-opacity-70 mt-[-5px]">
-                                            <span className="text-base flex items-center singlePosts-center cursor-pointer">{singlePost.user[0]?.username} {singlePost.user[0].verified && <img className="w-3 h-3 mx-1 mt-0.5 " src={import.meta.env.VITE_VERIFY} />}</span>
+                                            <span className="text-base flex items-center singlePosts-center cursor-pointer" onClick={()=>navigate(`/user?username=${singlePost.user[0].username}`)}>{singlePost.user[0]?.username} {singlePost.user[0].verified && <img className="w-3 h-3 mx-1 mt-0.5 " src={import.meta.env.VITE_VERIFY} />}</span>
                                             <span className="text-[10px] cursor-pointer">{ singlePost.location }</span>
                                         </div>
 
@@ -118,7 +118,7 @@ const SinglePost = () => {
 
                                     <div className=" cursor-pointer relative">
                                         <i className="fa fa-ellipsis text-white text-opacity-70" onClick={()=>showOptions(singlePost._id)}></i>
-                                        <section className={`absolute bg-black z-50 text-white p-3 px-5 ${menuOptions===singlePost._id ? `right-3` : `right-[-10rem]`} transition-all duration-500 top-4 rounded-xl whitespace-nowrap`}>
+                                        <section className={`absolute bg-black z-50 text-white p-3 px-5 right-3 ${menuOptions===singlePost._id ? `opacity-100 pointer-events-auto` : `opacity-0 pointer-events-none`} transition-all duration-500 top-4 rounded-xl whitespace-nowrap`}>
                                             <p onClick={()=> copyToClipboard(window.location.href)}><i className="fa fa-copy mb-2" /> Copy</p>
                                             {
                                                 userInfo._id == singlePost.user[0]?._id && <p className="text-red-600" onClick={async ()=> await removePost(singlePost._id, singlePost.url, singlePost.type)}><i className="fa fa-trash"/> Delete</p>

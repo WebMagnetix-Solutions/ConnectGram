@@ -95,11 +95,11 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
                 }
             </div>
             <div className="absolute bg-[#1f1f1f] border-2 border-opacity-20 border-black flex justify-between w-full px-5 top-0 flex-shrink-0 text-white sm:w-[500px] p-3 rounded">
-                <div className="flex items-center">
+                <div className="flex items-center cursor-pointer">
                     <div className="flex items-center">
                         <p className="cursor-pointer mr-3" onClick={()=>setMessageShow("")}><i className="fa fa-arrow-left"/></p> <img alt="profile" src={messageShow.users[0].pic} className="w-12 h-12 rounded-full"/>
                     </div>
-                    <div className="ms-2">
+                    <div className="ms-2" onClick={() => navigate(`/user?username=${messageShow.users[0].username}`)}>
                         <p>{messageShow.users[0].name}</p>
                         <p className="text-xs">@{ messageShow.users[0].username }</p>
                     </div>

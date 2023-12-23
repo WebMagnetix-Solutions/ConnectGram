@@ -64,7 +64,7 @@ const ChatList = ({setMessageShow, newMessage}) => {
                             <div onClick={() => { setMessageShow(item) }} key={item._id} className="flex cursor-pointer justify-between items-center px-5 text-white bg-[#222] p-2.5 rounded-2xl">
                                 <div className="flex items-center">
                                     <div>
-                                        <img alt="user image" src={item.users[0].pic} className="w-12 h-12 rounded-full"/>
+                                        <img alt="user image" src={item.users[0].pic} className="w-12 h-12 rounded-full" onClick={()=>navigate(`/user?username=${item.users[0].username}`)}/>
                                     </div>
                                     <div className="ms-3 flex flex-col justify-center">
                                         <p>{item.users[0].name}</p>

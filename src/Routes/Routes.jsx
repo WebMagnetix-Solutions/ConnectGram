@@ -7,7 +7,7 @@ import Page404 from "../Components/Page404"
 
 const AppRouter = () => {
 
-    const commonPath = ["/", "/search", "/new-post", "/my-profile", "/post", "/messenger"]
+    const commonPath = ["/", "/search", "/new-post", "/my-profile", "/post", "/messenger","/user"]
 
     return (
         <BrowserRouter>
