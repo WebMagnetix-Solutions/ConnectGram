@@ -1,13 +1,26 @@
 import { api } from "../../api_call"
+import { regex } from "../Helper/Helper"
 
 export const userLogin = async ({username, password}) => {
     try {
+        if (!username && !password) {
+            return "Fields are empty"
+        }
+        if (!username) {
+            return 'Username is empty'
+        }
+        if (! regex.username.test(username)) {
+            return "Invalid username"    
+        }
+        if (!password) {
+            return 'Password is empty'
+        }
+        if (!regex.password.test(password)) {
+            return "Invalid Password"    
+        } 
         const { data } = await api.get(`/user/login?username=${username}&password=${password}`)
         return data
     } catch (err) {
-        if(err.response.status===401){
-            return 401
-        }
         return err.response.data.message
     }
 }
@@ -26,6 +39,30 @@ export const userList = async (prefix=null) => {
 
 export const userSignup = async (userData) => {
     try {
+        const {name, username, email, password, confirm_password} = userData
+        for (const key in userData) {
+            if (!userData[key]) {
+                if (key === "confirm_password") {
+                    return "Confirm password is empty"
+                }
+                return key.replace(key[0], key[0].toUpperCase())+" is empty"
+            }
+        }
+        if (! regex.name.test(name)) {
+            return "Invalid name"    
+        }
+        if (! regex.username.test(username)) {
+            return "Invalid username"    
+        }
+        if (! regex.email.test(email)) {
+            return "Invalid email"    
+        }
+        if (! regex.password.test(password)) {
+            return "Invalid password"    
+        }
+        if (password !== confirm_password) {
+            return "Password does not match"
+        }
         const { data } = await api.post(`/user/signup`, userData)
         return data
     } catch (err) {

@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom"
 import { userLogin } from "../../Utils/api/user"
 import { setAuth } from "../../Auth"
 import { useState } from "react"
+import toast from "react-hot-toast"
 
 const Login = () => {
 
@@ -25,7 +26,7 @@ const Login = () => {
             setAuth(response.token, response.user)
             navigate("/", {replace: true})
         } else {
-            alert(response)
+            toast.error(response)
         }
     }
 

@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom"
 import { userSignup } from "../../Utils/api/user"
 import { useState } from "react"
 import { setAuth } from "../../Auth"
+import { registerValidation } from "../../Utils/Helper/Helper"
+import toast from "react-hot-toast"
 
 const Signup = () => {
 
@@ -14,9 +16,24 @@ const Signup = () => {
             confirm_password:""
         }
     )
+    const [formError, setFormError] = useState({})
     const navigate = useNavigate()
 
     const updateForm = (key, value) => {
+        if (key !== "confirm_password") {
+            const response = registerValidation(key, value)
+            setFormError(response)
+        } else {
+            if (formData.password !== value) {
+                if (value.length > 0) {
+                    setFormError({ confirm_password: "Passsword doen not match" })
+                } else {
+                    setFormError({confirm_password: null})
+                }   
+            } else {
+                setFormError({confirm_password: null})
+            }
+        }
         setFormData({...formData, [key]: value})
     }
 
@@ -27,7 +44,7 @@ const Signup = () => {
             setAuth(response.token, response.user)
             navigate("/", {replace: true})
         } else {
-            alert(response)
+            toast.error(response)
         }
     }
 
@@ -37,12 +54,17 @@ const Signup = () => {
                 <h1 className="font-bold text-2xl text-white text-center mb-4">Connect Gram</h1>
                 <p className="text-gray-300 text-center mb-3">SignUp</p>
                 
-                <input type="text" name="name" value={formData.name} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Name" className="w-full mb-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
-                <input type="text" name="username" value={formData.username} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Username" className="w-full mb-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
-                <input type="text" name="email" value={formData.email} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Email" className="w-full mb-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
-                <input type="password" name="password" value={formData.password} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Password" className="w-full mb-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
-                <input type="password" name="confirm_password" value={formData.confirm_password} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Confirm Password" className="w-full mb-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
-                <button className="bg-blue-900 text-white w-full p-1 rounded-xl bg-opacity-90 text-lg">Register</button>
+                <input type="text" name="name" value={formData.name} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Name" className="w-full text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
+                {formError.name && <span className="text-xs text-red-500">{formError.name}</span>}
+                <input type="text" name="username" value={formData.username} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Username" className="w-full mt-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
+                {formError.username && <span className="text-xs text-red-500">{formError.username}</span>}
+                <input type="text" name="email" value={formData.email} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Email" className="w-full mt-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
+                {formError.email && <span className="text-xs text-red-500">{formError.email}</span>}
+                <input type="password" name="password" value={formData.password} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Password" className="w-full mt-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
+                {formError.password && <span className="text-xs text-red-500">{formError.password}</span>}
+                <input type="password" name="confirm_password" value={formData.confirm_password} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Confirm Password" className="w-full mt-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
+                {formError.confirm_password && <span className="text-xs text-red-500">{formError.confirm_password}</span>}
+                <button className="bg-blue-900 mt-4 text-white w-full p-1 rounded-xl bg-opacity-90 text-lg">Register</button>
                 
                 <div className="flex flex-col gap-2 text-white text-center mt-5">
                     <p>Already have an account? <span onClick={()=>navigate("/login")} className="cursor-pointer">Log In</span></p>
