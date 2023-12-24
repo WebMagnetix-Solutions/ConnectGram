@@ -1,5 +1,4 @@
 /* eslint-disable react/prop-types */
-
 import { Fragment, useEffect, useRef, useState } from "react"
 import { getAllMessages, sendMessgae } from "../../Utils/api/chat"
 import { getMyData, removeAuth } from "../../Auth"
@@ -14,7 +13,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
     const [messages, setMessages] = useState([])
     const userInfo = getMyData()
     const messagesRef = useRef(null)
-    const { socket, setSocket } = useSocket()
+    const { socket } = useSocket()
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -64,7 +63,6 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
         const response = await sendMessgae(messageData)
         if (response.result) {
             socket.emit("newMessage", response.result)
-            setSocket(socket)
             setMessage("")
             setMessages((messages) => [...messages, response.result])
         } else {
@@ -84,7 +82,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
                     messages.map((item, index) => {
                         return (
                             <div key={index} className={`w-full flex ${item.sender._id === userInfo._id ? `justify-end` : `justify-start`} ${messages.length!==index+1 && `mb-3`}`}>
-                                <div className={`p-1 text-xs min-w-[100px] max-w-[250px] sm:text-base sm:max-w-[350px] whitespace-pre-wrap rounded-xl bg-opacity-30 px-2 ${item.sender._id === userInfo._id ? `bg-gray-600` : `bg-[#333]`}`}>
+                                <div className={`p-1 text-xs min-w-[100px] max-w-[250px] sm:text-base sm:max-w-[350px] whitespace-pre-wrap rounded-xl ${item.sender._id === userInfo._id ? `rounded-br-none` : `rounded-bl-none`} bg-opacity-30 px-2 ${item.sender._id === userInfo._id ? `bg-gray-600` : `bg-[#333]`}`}>
                                     <span className="pe-3">{item.content}</span>
                                     <p className="text-[8px] text-end"><i className="fa fa-check-double mr-1 text-sky-600"/> {new Date(item.createdAt).toLocaleString("default", {hour:"2-digit", minute: "2-digit"})}</p>
                                 </div>
@@ -109,7 +107,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
             <div className="absolute bg-[#1f1f1f] border-2 border-opacity-20 border-black flex justify-between w-full px-5 bottom-12 sm:bottom-0 first-letter:flex-shrink-0 text-white sm:w-[500px] p-2.5 rounded">
                 <form className="flex items-center w-full" onSubmit={async (e) => await handleSendMessage(e)}>
                     <div className="flex items-center w-full">
-                        <textarea rows={1} value={message} onChange={e => setMessage(e.target.value)} className="w-full resize-none p-2 rounded-full bg-black bg-opacity-50 outline-none text-white" placeholder="Message..."/>
+                        <textarea rows={1} value={message} onFocus={()=>console.log(socket.emit("isTyping", selectedChat.current?._id))} onChange={e => setMessage(e.target.value)} className="w-full resize-none p-2 rounded-full bg-black bg-opacity-50 outline-none text-white" placeholder="Message..."/>
                     </div>
                     <button type="submit" className="ms-2 outline-none w-12 h-10 cursor-pointer bg-black bg-opacity-50 rounded-full flex justify-center items-center text-white">
                         <i className="fa fa-paper-plane"/>

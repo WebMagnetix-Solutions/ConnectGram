@@ -4,10 +4,12 @@ import LoginPage from "../Pages/LoginPage"
 import SignupPage from "../Pages/SignupPage"
 import { Authentication } from "../ProtectedRoute"
 import Page404 from "../Components/Page404"
+import NoNetwork from "../Components/NoNetwork"
 
 const AppRouter = () => {
 
-    const commonPath = ["/", "/search", "/new-post", "/my-profile", "/post", "/messenger","/user"]
+    const commonPath = ["/", "/search", "/new-post", "/my-profile", "/post", "/messenger", "/user"]
+    const route = localStorage.getItem("lostInternet")
 
     return (
         <BrowserRouter>
@@ -17,6 +19,7 @@ const AppRouter = () => {
                 {
                     commonPath.map(item => ( <Route exact key={item} path={item} element={<Authentication><MainPage /></Authentication>} /> ))
                 }
+                <Route path={`/lost/connection/${route}`} Component={NoNetwork} />
                 <Route path="*" Component={Page404}/>
             </Routes>
         </BrowserRouter>

@@ -1,5 +1,6 @@
 import { useEffect } from "react"
 import AppRouter from "./Routes/Routes"
+import {v4 as uuidv4} from "uuid"
 
 const App = () => {
 
@@ -18,8 +19,24 @@ const App = () => {
         }
     }
 
+    const handleOnline = () => {
+        if (navigator.onLine) {
+            window.location.href = "/"
+        } else {
+            const route = uuidv4()
+            localStorage.setItem("lostInternet", route)
+            window.location.href = "/lost/connection/"+route
+        }
+    }
+
     useEffect(() => {
 
+        if (!navigator.onLine && window.location.pathname.slice(0,17) !== "/lost/connection/") {
+            handleOnline()
+        }
+
+        window.addEventListener("online", handleOnline)
+        window.addEventListener("offline", handleOnline)
         document.addEventListener("contextmenu", (e) => e.preventDefault())
         document.addEventListener('touchstart', touchStart, { passive: false })
         document.addEventListener('touchend', touchEnd)
@@ -30,6 +47,8 @@ const App = () => {
             }
         })
         return () => {
+            window.removeEventListener("online", handleOnline)
+            window.removeEventListener("offline", handleOnline)
             document.removeEventListener("contextmenu", (e) => e.preventDefault())
             document.removeEventListener('touchstart', touchStart, { passive: false })
             document.removeEventListener('touchend', touchEnd)
@@ -43,7 +62,7 @@ const App = () => {
     }, [])
 
     return (
-        <AppRouter/>
+        < AppRouter />
     )
 }
 

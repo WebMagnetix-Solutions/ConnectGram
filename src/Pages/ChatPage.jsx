@@ -2,7 +2,6 @@ import { useEffect, useRef, useState } from "react"
 import ChatList from "../Components/Messages/ChatList"
 import Messages from "../Components/Messages/Messages"
 import { useSocket } from "../Hooks/Context"
-import { createSocket } from "../Utils/Helper/Helper"
 import { getMyData } from "../Auth"
 import toast from "react-hot-toast"
 
@@ -10,15 +9,13 @@ const ChatPage = () => {
 
     const [messageShow, setMessageShow] = useState("")
     const currentChat = useRef(null)
-    const { socket, setSocket } = useSocket()
+    const { socket } = useSocket()
     const [newMessage, setNewMessage] = useState({})
     const [refreshList, setRefreshList] = useState(0)
     const userInfo = getMyData()
 
     useEffect(() => {
-        const response = createSocket()
-        response.emit("setup", userInfo._id)
-        setSocket(response)
+        socket.emit("setup", userInfo._id)
     }, [])
 
     useEffect(() => {
@@ -29,20 +26,21 @@ const ChatPage = () => {
         }
     }, [messageShow])
 
+    const handleNewMessage = (response) => {
+        setRefreshList(new Date().getTime())
+        if (response.chat_id._id === currentChat.current?._id) {
+            setNewMessage(response)
+        } else {
+            return toast.success(`New message: ${response.sender.name}`)
+        }
+    }
+
     useEffect(() => {
         if (socket) {
-            const handleNewMessage = (response) => {
-                setRefreshList(new Date().getTime())
-                if (response.chat_id._id === currentChat.current?._id) {
-                    setNewMessage(response)
-                } else {
-                    return toast.success(`New message: ${response.sender.name}`)
-                }
-            }
-
             socket.on("ReceivedMessage", handleNewMessage)
-
-            return () => socket.off("ReceivedMessage", handleNewMessage)
+        }
+        return () => {
+            socket.off("ReceivedMessage")
         }
     }, [socket])
 

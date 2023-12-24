@@ -1,14 +1,15 @@
 /* eslint-disable react/prop-types */
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext } from "react";
+import { createSocket } from "../Utils/Helper/Helper";
 
 const MyContext = createContext()
 
 export const MyProvider = ({ children }) => {
     
-    const [socket, setSocket] = useState(null)
+    let socket = createSocket()
 
     return (
-        <MyContext.Provider value={{ socket, setSocket }}>
+        <MyContext.Provider value={{ socket }}>
             {children}
         </MyContext.Provider>
     )

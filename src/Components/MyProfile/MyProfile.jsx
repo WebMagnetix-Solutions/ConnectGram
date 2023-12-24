@@ -1,16 +1,19 @@
 import { Fragment, useEffect, useState } from "react"
-import { getMe } from "../../Utils/api/user"
+import { getFollowers, getFollowings, getMe } from "../../Utils/api/user"
 import { getMyData, removeAuth } from "../../Auth"
 import MyPosts from "./MyPosts"
 import { useNavigate } from "react-router-dom"
 import EditProfile from "../Modal/EditProfile"
 import toast from "react-hot-toast"
+import FollowList from "../Modal/FollowList"
+import Verified from "../Verified"
 
 const MyProfile = () => {
     
     const [myData, setMyData] = useState({})
     const [selected, setSelected] = useState("image")
     const [isEdit, setEdit] = useState(false)
+    const [followList, setFollowList] = useState({title: "", list: []})
     const navigate = useNavigate()
     
     useEffect(() => {
@@ -35,9 +38,29 @@ const MyProfile = () => {
         removeAuth()
         navigate("/login")
     }
+
+    const fetchFollow = async (type, user_id) => {
+        let response = null 
+        if (type === "Followers") {
+            response = await getFollowers(user_id)
+        } else {
+            response = await getFollowings(user_id)
+        }
+        if (response.result) {
+            setFollowList({title: type, list: response.result})
+        } else {
+            if (response === 401) {
+                removeAuth()
+                navigate("/login")
+            } else {
+                toast.error(response)
+            }
+        }
+    }
     
     return (
         <Fragment>
+            {myData._id && <FollowList list={followList} setMyData={setMyData} myData={myData} setFollowList={setFollowList} />}
             {myData._id && <EditProfile myData={myData} setMyData={setMyData} setEdit={setEdit} isEdit={isEdit} /> }
             <div className="pb-16 sm:pb-1 pt-3 text-white w-full px-2 sm:px-10 h-screen overflow-y-auto">
                 <div className="flex sm:justify-between">
@@ -49,11 +72,11 @@ const MyProfile = () => {
                             <p>{ myData.posts?.length }</p>
                             <p>Posts</p>
                         </div>
-                        <div className="flex flex-col justify-center items-center">
+                        <div className="flex flex-col cursor-pointer justify-center items-center" onClick={async () => await fetchFollow("Followers", myData._id)}>
                             <p>{ myData.followers?.length }</p>
                             <p>Followers</p>
                         </div>
-                        <div className="flex flex-col justify-center items-center">
+                        <div className="flex flex-col cursor-pointer justify-center items-center" onClick={async () => await fetchFollow("Followings", myData._id)}>
                             <p>{ myData.following?.length }</p>
                             <p>Followings</p>
                         </div>
@@ -66,7 +89,7 @@ const MyProfile = () => {
 
                 <div className="mt-2">
                     <p className="">{myData.name}</p>
-                    <p className="text-sm flex items-center">@{myData.username} { myData.verified && <img className="w-3 h-3 mx-1 mt-0.5 " src={ import.meta.env.VITE_VERIFY } /> }</p>
+                    <p className="text-sm flex items-center">@{myData.username} <Verified verified={myData.verified} /></p>
                     <div className="whitespace-pre-wrap mt-2">
                         {myData.bio}
                     </div>

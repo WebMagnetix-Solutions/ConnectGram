@@ -136,3 +136,27 @@ export const followOrUnfollow = async (user_id, to_id) => {
         return err.response.data.message
     }
 }
+
+export const getFollowers = async (user_id) => {
+    try {
+        const { data } = await api.get(`/user/get/followers/${user_id}`)
+        return data
+    } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
+        return err.response.data.message
+    }
+}
+
+export const getFollowings = async (user_id) => {
+    try {
+        const { data } = await api.get(`/user/get/followings/${user_id}`)
+        return data
+    } catch (err) {
+        if(err.response.status===401){
+            return 401
+        }
+        return err.response.data.message
+    }
+}

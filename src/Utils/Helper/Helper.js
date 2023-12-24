@@ -1,6 +1,6 @@
 import moment from "moment";
 import toast from "react-hot-toast";
-import io from "socket.io-client"
+import { io } from "socket.io-client"
 
 export const getPostUniqueId = (cloudinaryURL) => {
 
@@ -27,7 +27,8 @@ export const copyToClipboard = (text) => {
 }
 
 export const createSocket = () => {
-    return io(import.meta.env.VITE_SOCKET)
+    const connection = io(import.meta.env.VITE_SOCKET)
+    return connection
 }
 
 export const regex = {

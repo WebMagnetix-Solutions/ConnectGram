@@ -5,7 +5,6 @@ import { getMyData, removeAuth } from "../../Auth"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 
-
 const ChatList = ({setMessageShow, newMessage}) => {
 
     const [chats, setChats] = useState([])
@@ -59,7 +58,7 @@ const ChatList = ({setMessageShow, newMessage}) => {
         <Fragment>
             <div className="w-full break-all pt-14 bg-[#111] flex flex-col gap-3 overflow-y-auto bg-opacity-20 p-5 px-5 sm:w-[500px] text-white h-screen">
                 {
-                    chats.map((item) => {
+                    chats.length > 0 && chats.map((item) => {
                         return (
                             <div onClick={() => { setMessageShow(item) }} key={item._id} className="flex cursor-pointer justify-between items-center px-5 text-white bg-[#222] p-2.5 rounded-2xl">
                                 <div className="flex items-center">
@@ -71,8 +70,8 @@ const ChatList = ({setMessageShow, newMessage}) => {
                                         <p className="text-[10px] mt-1"><i className="fa fa-check-double mr-1 text-sky-600"/> { item.lastMessage.length > 10 ? item.lastMessage.slice(0,10)+"..." : item.lastMessage || "--" }</p>
                                     </div>
                                 </div>
-                                <div className="text-xs">
-                                    {new Date(item.updatedAt).toLocaleString("default", {hour:"2-digit", minute: "2-digit"})}
+                                <div className="text-xs flex flex-col">
+                                    {new Date(item.updatedAt).toLocaleString("default", { hour: "2-digit", minute: "2-digit" })}
                                 </div>
                             </div>
                         )
