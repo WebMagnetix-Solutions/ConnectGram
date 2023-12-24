@@ -1,6 +1,5 @@
 import { useState } from "react"
 import { userList } from "../../Utils/api/user"
-import { removeAuth } from "../../Auth"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 
@@ -16,12 +15,7 @@ const Search = () => {
             if (response.result) {
                 setSearchResult(response.result)
             } else {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    toast.error(response)
-                }
+                toast.error(response)
             }
         }
     }

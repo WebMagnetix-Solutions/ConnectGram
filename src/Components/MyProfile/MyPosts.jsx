@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { getMyData, removeAuth } from "../../Auth"
+import { getMyData } from "../../Auth"
 import { getMyPosts, getSavedPosts } from "../../Utils/api/post"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
@@ -20,23 +20,13 @@ const MyPosts = (prop) => {
                     if (response.result) {
                         setMyPosts(response.result.filter(item => item.saved.includes(userInfo._id)))
                     } else {
-                        if (response === 401) {
-                            removeAuth()
-                            navigate("/login")
-                        } else {
-                            toast.error(response)
-                        }
+                        toast.error(response)
                     }
                 } else {
                     setMyPosts(response.result.filter(item => item.type === prop.type))
                 }
             } else {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    toast.error(response)
-                }
+                toast.error(response)
             }
         }
         fetchData()

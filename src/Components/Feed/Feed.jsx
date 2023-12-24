@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react"
 import { deletePost, getFollowingPost, likeOrDislike, saveOrUnSave } from "../../Utils/api/post"
-import { getMyData, removeAuth } from "../../Auth"
+import { getMyData } from "../../Auth"
 import toast from "react-hot-toast"
 import Comments from "../Comments/Comments"
 import { useNavigate } from "react-router-dom"
 import { copyToClipboard } from "../../Utils/Helper/Helper"
+import Stories from "../Stories/Stories"
 
 const Feed = () => {
 
@@ -20,12 +21,7 @@ const Feed = () => {
             if (response.result) {
                 setPosts(response.result)
             } else {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    toast.error(response)
-                }
+                toast.error(response)
             }
         }
         fetchData()
@@ -44,12 +40,7 @@ const Feed = () => {
         if (response.likes) {
             setPosts(posts.map(item => item._id === post_id ? { ...item, likes: response.likes } : item))
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
 
@@ -58,12 +49,7 @@ const Feed = () => {
         if (response.saved) {
             setPosts(posts.map(item => item._id === post_id ? { ...item, saved: response.saved } : item))
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
 
@@ -75,19 +61,15 @@ const Feed = () => {
                 return response.message
             },
             error: (response) => {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    return response
-                }
+                return response
             }
         })
     }
 
     return (
          
-        <div className="pb-14 sm:pb-0 pt-1 bg-[#222] h-screen overflow-y-auto">
+        <div className="pb-14 sm:pb-0 bg-[#222] flex h-screen flex-col overflow-y-auto">
+            <Stories />
             {
                 posts.map((item) => {
                     return (

@@ -23,12 +23,7 @@ const MyProfile = () => {
             if (response.result) {
                 setMyData(response.result)
             } else {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    toast.error(response)
-                }
+                toast.error(response)
             }
         }
         fetchData()
@@ -49,12 +44,7 @@ const MyProfile = () => {
         if (response.result) {
             setFollowList({title: type, list: response.result})
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
     

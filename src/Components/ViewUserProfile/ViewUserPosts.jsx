@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react"
-import { removeAuth } from "../../Auth"
 import { getUserPostByUsername } from "../../Utils/api/post"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
@@ -12,16 +11,10 @@ const ViewUserPosts = (prop) => {
     useEffect(() => {
         const fetchData = async () => {
             const response = await getUserPostByUsername(prop.searchUsername)
-            console.log(response);
             if (response.result) {
                 setUserPosts(response.result.filter(item => item.type === prop.type))
             } else {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    toast.error(response)
-                }
+                toast.error(response)
             }
         }
         fetchData()

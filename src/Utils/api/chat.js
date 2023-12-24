@@ -5,10 +5,7 @@ export const createChat = async (user_id, to_id) => {
         const { data } = await api.post(`/chat/chat`, { user_id, to_id })
         return data
     } catch (err) {
-        if(err.response.status===401){
-            return 401
-        }
-        return err.response.data.message
+        return err?.response?.data?.message || err.message
     }
 }
 
@@ -17,10 +14,7 @@ export const getChatList = async (user_id, search="") => {
         const { data } = await api.get(`/chat/chats/${user_id}?search=${search}`)
         return data
     } catch (err) {
-        if(err.response.status===401){
-            return 401
-        }
-        return err.response.data.message
+        return err?.response?.data?.message || err.message
     }
 }
 
@@ -29,10 +23,7 @@ export const getAllMessages = async (chat_id) => {
         const { data } = await api.get(`/chat/messages/${chat_id}`)
         return data
     } catch (err) {
-        if(err.response.status===401){
-            return 401
-        }
-        return err.response.data.message
+        return err?.response?.data?.message || err.message
     }
 }
 
@@ -41,9 +32,6 @@ export const sendMessgae = async (messageData) => {
         const { data } = await api.post(`/chat/sendMessage`, {messageData})
         return data
     } catch (err) {
-        if(err.response.status===401){
-            return 401
-        }
-        return err.response.data.message
+        return err?.response?.data?.message || err.message
     }
 }

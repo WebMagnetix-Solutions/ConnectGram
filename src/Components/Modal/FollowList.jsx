@@ -1,14 +1,12 @@
 /* eslint-disable react/prop-types */
 
-import { useNavigate } from "react-router-dom"
-import { getMyData, removeAuth } from "../../Auth"
+import { getMyData } from "../../Auth"
 import { followOrUnfollow } from "../../Utils/api/user"
 import Verified from "../Verified"
 import toast from "react-hot-toast"
 
 const FollowList = ({ list, myData, setMyData, setFollowList }) => {
 
-    const navigate = useNavigate()
     const userInfo = getMyData()
     
     const manageFollow = async (user_id, to_id) => {
@@ -21,12 +19,7 @@ const FollowList = ({ list, myData, setMyData, setFollowList }) => {
                 setMyData({...myData, following: [...myData.following, to_id]})
             }
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
 

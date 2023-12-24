@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react"
 import { followOrUnfollow, getFollowers, getFollowings, getMe, getUserByUsername } from "../../Utils/api/user"
-import { getMyData, removeAuth } from "../../Auth"
+import { getMyData } from "../../Auth"
 import { useLocation, useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import ViewUserPosts from "./ViewUserPosts"
@@ -26,12 +26,7 @@ const ViewUserProfile = () => {
             if (response1.result) {
                 setUserInfo(response1.result)
             } else {
-                if (response1 === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    toast.error(response1)
-                }
+                toast.error(response)
             }
             if (response.result) {
                 if (response.result._id === userInfo._id) {
@@ -40,12 +35,7 @@ const ViewUserProfile = () => {
                     setUserData(response.result)
                 }
             } else {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    toast.error(response)
-                }
+                toast.error(response)
             }
         }
         fetchData()
@@ -61,12 +51,7 @@ const ViewUserProfile = () => {
         if (response.result) {
             setFollowList({title: type, list: response.result})
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
 
@@ -80,12 +65,7 @@ const ViewUserProfile = () => {
                 setUserData((item) => ({...item, followers: userData.followers}))
             }
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
     

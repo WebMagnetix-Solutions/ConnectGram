@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Fragment, useEffect, useState } from "react"
 import { getChatList } from "../../Utils/api/chat"
-import { getMyData, removeAuth } from "../../Auth"
+import { getMyData } from "../../Auth"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 
@@ -22,12 +22,7 @@ const ChatList = ({setMessageShow, newMessage}) => {
             })
             setChats(result)
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
         
     }

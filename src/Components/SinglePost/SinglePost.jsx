@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
 import { deletePost, getSinglePost, likeOrDislike, saveOrUnSave } from "../../Utils/api/post"
-import { getMyData, removeAuth } from "../../Auth"
+import { getMyData } from "../../Auth"
 import toast from "react-hot-toast"
 import Comments from "../Comments/Comments"
 import { copyToClipboard } from "../../Utils/Helper/Helper"
@@ -27,12 +27,7 @@ const SinglePost = () => {
                 if (response.result) {
                     setSinglePost(response.result[0])
                 } else {
-                    if (response === 401) {
-                        removeAuth()
-                        navigate("/login")
-                    } else {
-                        toast.error(response)
-                    }
+                    toast.error(response)
                 }
             }
             fetchData()
@@ -52,12 +47,7 @@ const SinglePost = () => {
         if (response.likes) {
             setSinglePost({ ...singlePost, likes: response.likes })
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
 
@@ -66,12 +56,7 @@ const SinglePost = () => {
         if (response.saved) {
             setSinglePost({ ...singlePost, saved: response.saved })
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
 
@@ -83,12 +68,7 @@ const SinglePost = () => {
                 return response.message
             },
             error: (response) => {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    return response
-                }
+                return response
             }
         })
     }

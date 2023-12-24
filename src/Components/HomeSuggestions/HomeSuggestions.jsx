@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { followOrUnfollow, suggestUsers } from "../../Utils/api/user"
-import { getMyData, removeAuth } from "../../Auth"
+import { getMyData } from "../../Auth"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 
@@ -16,12 +16,7 @@ const HomeSuggestions = () => {
             if (response.result) {
                 setSuggestions(response.result)
             } else {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    toast.error(response)
-                }
+                toast.error(response)
             }
             
         }
@@ -35,12 +30,7 @@ const HomeSuggestions = () => {
                 return item._id !== to_id
             }))
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
 

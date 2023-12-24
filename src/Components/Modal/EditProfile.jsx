@@ -3,13 +3,10 @@
 import { useEffect, useState } from "react"
 import { profileEdit } from "../../Utils/api/user"
 import toast from "react-hot-toast"
-import { removeAuth } from "../../Auth"
-import { useNavigate } from "react-router-dom"
 
 const EditProfile = ({ setMyData, myData, setEdit, isEdit }) => {
 
     const [formData, setFormData] = useState({ name: "", username: "", pic: "", bio: "" })
-    const navigate = useNavigate()
     
     const setDefault = () => {
         setFormData({
@@ -53,12 +50,7 @@ const EditProfile = ({ setMyData, myData, setEdit, isEdit }) => {
             setMyData(response.result)
             setEdit(false)
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
 

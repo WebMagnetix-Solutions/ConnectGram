@@ -1,7 +1,7 @@
 /* eslint-disable react/prop-types */
 import { Fragment, useEffect, useRef, useState } from "react"
 import { getAllMessages, sendMessgae } from "../../Utils/api/chat"
-import { getMyData, removeAuth } from "../../Auth"
+import { getMyData } from "../../Auth"
 import { useSocket } from "../../Hooks/Context"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
@@ -23,12 +23,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
             if (response.result) {
                 setMessages(response.result)
             } else {
-                if (response === 401) {
-                    removeAuth()
-                    navigate("/login")
-                } else {
-                    toast.error(response)
-                }
+                toast.error(response)
             }
         }
         selectedChat.current && fetchData()
@@ -66,12 +61,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
             setMessage("")
             setMessages((messages) => [...messages, response.result])
         } else {
-            if (response === 401) {
-                removeAuth()
-                navigate("/login")
-            } else {
-                toast.error(response)
-            }
+            toast.error(response)
         }
     }
 
