@@ -21,7 +21,7 @@ export const userLogin = async ({username, password}) => {
         const { data } = await api.get(`/user/login?username=${username}&password=${password}`)
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }
 
@@ -30,7 +30,7 @@ export const userList = async (prefix=null) => {
         const { data } = await api.get(`/user/users?prefix=${prefix}`)
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }
 
@@ -63,7 +63,7 @@ export const userSignup = async (userData) => {
         const { data } = await api.post(`/user/signup`, userData)
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }
 
@@ -72,7 +72,7 @@ export const getMe = async (id) => {
         const { data } = await api.get(`/user/getMe/${id}`)
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }
 
@@ -81,7 +81,7 @@ export const getUserByUsername = async (username) => {
         const { data } = await api.get(`/user/user?username=${username}`)
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }
 
@@ -94,7 +94,7 @@ export const profileEdit = async (formData) => {
         })
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }
 
@@ -103,7 +103,7 @@ export const suggestUsers = async (user_id) => {
         const { data } = await api.get(`/user/suggestions/${user_id}`)
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }
 
@@ -112,7 +112,7 @@ export const followOrUnfollow = async (user_id, to_id) => {
         const { data } = await api.patch(`/user/follow`, {user_id, to_id})
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }
 
@@ -121,7 +121,7 @@ export const getFollowers = async (user_id) => {
         const { data } = await api.get(`/user/get/followers/${user_id}`)
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }
 
@@ -130,6 +130,6 @@ export const getFollowings = async (user_id) => {
         const { data } = await api.get(`/user/get/followings/${user_id}`)
         return data
     } catch (err) {
-        return err?.response?.data?.message || err.message
+        return { message : err?.response?.data?.message || err.message} 
     }
 }

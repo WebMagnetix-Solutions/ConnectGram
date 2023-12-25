@@ -10,7 +10,7 @@ ReactDOM.createRoot(document.getElementById('root')).render(
         <MyProvider>
             <App />
             <Toaster
-                position="top-right"
+                position="top-center"
                 reverseOrder={false}
             />
         </MyProvider>

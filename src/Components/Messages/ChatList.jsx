@@ -22,7 +22,7 @@ const ChatList = ({setMessageShow, newMessage}) => {
             })
             setChats(result)
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
         
     }

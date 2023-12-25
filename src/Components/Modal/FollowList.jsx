@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 
+import { useNavigate } from "react-router-dom"
 import { getMyData } from "../../Auth"
 import { followOrUnfollow } from "../../Utils/api/user"
 import Verified from "../Verified"
@@ -8,6 +9,7 @@ import toast from "react-hot-toast"
 const FollowList = ({ list, myData, setMyData, setFollowList }) => {
 
     const userInfo = getMyData()
+    const navigate = useNavigate()
     
     const manageFollow = async (user_id, to_id) => {
         const response = await followOrUnfollow(user_id, to_id)
@@ -19,7 +21,7 @@ const FollowList = ({ list, myData, setMyData, setFollowList }) => {
                 setMyData({...myData, following: [...myData.following, to_id]})
             }
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 
@@ -34,7 +36,7 @@ const FollowList = ({ list, myData, setMyData, setFollowList }) => {
                     list.list.map(item => {
                         return (
                             <div key={item._id} className="bg-[#1c1c1c] flex justify-between items-center rounded-xl p-2">
-                                <div className="flex items-center">
+                                <div className="flex items-center" onClick={() => navigate(`/user?username=${item.username}`)}>
                                     <div>
                                         <img alt={item.username} src={item.pic} className="rounded-full w-12 h-12"/>
                                     </div>

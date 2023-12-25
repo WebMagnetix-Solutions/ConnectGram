@@ -23,7 +23,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
             if (response.result) {
                 setMessages(response.result)
             } else {
-                toast.error(response)
+                toast.error(response.message)
             }
         }
         selectedChat.current && fetchData()
@@ -61,7 +61,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
             setMessage("")
             setMessages((messages) => [...messages, response.result])
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 

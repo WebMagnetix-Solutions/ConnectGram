@@ -23,7 +23,7 @@ const MyProfile = () => {
             if (response.result) {
                 setMyData(response.result)
             } else {
-                toast.error(response)
+                toast.error(response.message)
             }
         }
         fetchData()
@@ -44,7 +44,7 @@ const MyProfile = () => {
         if (response.result) {
             setFollowList({title: type, list: response.result})
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
     

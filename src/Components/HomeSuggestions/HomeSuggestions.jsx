@@ -16,7 +16,7 @@ const HomeSuggestions = () => {
             if (response.result) {
                 setSuggestions(response.result)
             } else {
-                toast.error(response)
+                toast.error(response.message)
             }
             
         }
@@ -30,7 +30,7 @@ const HomeSuggestions = () => {
                 return item._id !== to_id
             }))
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 

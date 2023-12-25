@@ -17,7 +17,7 @@ const Comments = ({ post, setShowComment, posts, setPosts }) => {
             if (response.result) {
                 setComments(response.result)
             } else {
-                toast.error(response)
+                toast.error(response.message)
             }  
         }
         post && fetchData()
@@ -47,7 +47,7 @@ const Comments = ({ post, setShowComment, posts, setPosts }) => {
             }
             setComments(response.result)
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 
@@ -56,7 +56,7 @@ const Comments = ({ post, setShowComment, posts, setPosts }) => {
         if (response.likes) {
             setComments(comments.map(item => item._id === id ? { ...item, likes: response.likes } : item))
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 

@@ -14,7 +14,7 @@ const ViewUserPosts = (prop) => {
             if (response.result) {
                 setUserPosts(response.result.filter(item => item.type === prop.type))
             } else {
-                toast.error(response)
+                toast.error(response.message)
             }
         }
         fetchData()

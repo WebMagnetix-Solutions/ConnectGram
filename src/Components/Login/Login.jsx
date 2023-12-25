@@ -26,7 +26,7 @@ const Login = () => {
             setAuth(response.token, response.user)
             navigate("/", {replace: true})
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 

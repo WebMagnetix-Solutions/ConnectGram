@@ -26,7 +26,7 @@ const ViewUserProfile = () => {
             if (response1.result) {
                 setUserInfo(response1.result)
             } else {
-                toast.error(response)
+                toast.error(response.message)
             }
             if (response.result) {
                 if (response.result._id === userInfo._id) {
@@ -35,7 +35,7 @@ const ViewUserProfile = () => {
                     setUserData(response.result)
                 }
             } else {
-                toast.error(response)
+                toast.error(response.message)
             }
         }
         fetchData()
@@ -51,7 +51,7 @@ const ViewUserProfile = () => {
         if (response.result) {
             setFollowList({title: type, list: response.result})
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 
@@ -65,7 +65,7 @@ const ViewUserProfile = () => {
                 setUserData((item) => ({...item, followers: userData.followers}))
             }
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
     
@@ -100,7 +100,7 @@ const ViewUserProfile = () => {
                                     if (response.result) {
                                         navigate("/messenger")
                                     } else {
-                                        toast.error(response)
+                                        toast.error(response.message)
                                     }
                                 }
                             }
@@ -124,7 +124,7 @@ const ViewUserProfile = () => {
                                 if (response.result) {
                                     navigate("/messenger")
                                 } else {
-                                    toast.error(response)
+                                    toast.error(response.message)
                                 }
                             }
                         }

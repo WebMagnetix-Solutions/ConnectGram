@@ -27,7 +27,7 @@ const SinglePost = () => {
                 if (response.result) {
                     setSinglePost(response.result[0])
                 } else {
-                    toast.error(response)
+                    toast.error(response.message)
                 }
             }
             fetchData()
@@ -47,7 +47,7 @@ const SinglePost = () => {
         if (response.likes) {
             setSinglePost({ ...singlePost, likes: response.likes })
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 
@@ -56,7 +56,7 @@ const SinglePost = () => {
         if (response.saved) {
             setSinglePost({ ...singlePost, saved: response.saved })
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 

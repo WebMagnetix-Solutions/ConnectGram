@@ -50,7 +50,7 @@ const EditProfile = ({ setMyData, myData, setEdit, isEdit }) => {
             setMyData(response.result)
             setEdit(false)
         } else {
-            toast.error(response)
+            toast.error(response.message)
         }
     }
 

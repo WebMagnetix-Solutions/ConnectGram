@@ -20,13 +20,13 @@ const MyPosts = (prop) => {
                     if (response.result) {
                         setMyPosts(response.result.filter(item => item.saved.includes(userInfo._id)))
                     } else {
-                        toast.error(response)
+                        toast.error(response.message)
                     }
                 } else {
                     setMyPosts(response.result.filter(item => item.type === prop.type))
                 }
             } else {
-                toast.error(response)
+                toast.error(response.message)
             }
         }
         fetchData()

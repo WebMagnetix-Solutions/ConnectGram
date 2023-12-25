@@ -15,7 +15,7 @@ const Search = () => {
             if (response.result) {
                 setSearchResult(response.result)
             } else {
-                toast.error(response)
+                toast.error(response.message)
             }
         }
     }
