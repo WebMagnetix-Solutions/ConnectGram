@@ -144,7 +144,7 @@ const Feed = () => {
                                     <div className=" cursor-pointer relative">
                                         <i className="fa fa-ellipsis text-white text-opacity-70" onClick={() => showOptions(item._id)}></i>
                                         <section className={`absolute bg-black z-50 text-white p-3 px-5 right-3 ${menuOptions === item._id ? `opacity-100 pointer-events-auto` : `opacity-0 pointer-events-none`} transition-all duration-500 top-4 rounded-xl whitespace-nowrap`}>
-                                            <p onClick={() => copyToClipboard(window.location.href)}><i className="fa fa-copy mb-2" /> Copy</p>
+                                            <p onClick={() => copyToClipboard(`${window.location.origin}/post?view=${item._id}`)}><i className="fa fa-copy mb-2" /> Copy</p>
                                             <p onClick={() => navigate(`/post?view=${item._id}`)}><i className="fa fa-eye mb-2" /> View</p>
                                             {
                                                 userInfo._id == item.user[0]._id && <p className="text-red-600" onClick={async () => await removePost(item._id, item.url, item.type)}><i className="fa fa-trash" /> Delete</p>
