@@ -19,6 +19,7 @@ const SinglePost = () => {
     const [menuOptions, setMenuOptions] = useState("")
     const [showComment, setShowComment] = useState("")
     const [isLoading, setIsLoading] = useState(true)
+    const [isPlaying, setIsPlaying] = useState(false)
 
     useEffect(() => {
         if (!view) {
@@ -116,8 +117,21 @@ const SinglePost = () => {
                                 </div>
 
                                 <div onDoubleClick={async () => await updateLike(singlePost._id, userInfo._id)}>
-                                    {singlePost.type == "image" && <img src={singlePost.url} alt={singlePost.caption} className="rounded-xl flex w-full object-contain" />}
-                                    {singlePost.type == "video" && <video controls src={singlePost.url} alt={singlePost.caption} className="rounded-xl flex w-full object-contain cursor-pointer" />}
+                                    {singlePost.type == "image" && <img src={singlePost.url} alt={singlePost.caption} className="rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square cursor-pointer" />}
+                                    {singlePost.type == "video" && <span className="relative"> 
+                                        <video src={singlePost.url} onClick={(e) => {
+                                            if (e.currentTarget.paused) {
+                                                e.currentTarget.play()
+                                                setIsPlaying(true)
+                                            } else {
+                                                e.currentTarget.pause()
+                                                setIsPlaying(false)
+                                            }
+                                        }} alt={singlePost.caption} className="rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square cursor-pointer" />
+                                        {
+                                            !isPlaying && <i className="fa fa-play pointer-events-none text-white text-2xl sm:text-4xl absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]" />
+                                        }
+                                    </span>}
                                 </div>
 
                                 <div className="mt-2 flex justify-between text-white text-opacity-70">

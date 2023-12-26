@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react"
+import { Fragment, createRef, useEffect, useRef, useState } from "react"
 import { deletePost, getFollowingPost, likeOrDislike, saveOrUnSave } from "../../Utils/api/post"
 import { getMyData } from "../../Auth"
 import toast from "react-hot-toast"
@@ -22,6 +22,8 @@ const Feed = () => {
     const navigate = useNavigate()
     const [shareTo, setShareTo] = useState("")
     const [isLoading, setIsLoading] = useState(true)
+    const videoRefs = useRef(null)
+    const [currentPlaying, setCurrentPlaying] = useState(-1)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -39,6 +41,8 @@ const Feed = () => {
                 toast.error(stories.message)
             }
             if (response.result) {
+                const refs = response.result.map(() => createRef())
+                videoRefs.current = refs
                 setPosts(response.result)
             } else {
                 toast.error(response.message)
@@ -86,6 +90,25 @@ const Feed = () => {
         })
     }
 
+    const toggleVideo = (playIndex) => {
+        if (videoRefs.current) {
+            if (videoRefs.current[playIndex].current.paused) {
+                videoRefs.current[playIndex].current.play()
+                setCurrentPlaying(playIndex)
+                videoRefs.current.forEach((item, index) => {
+                    if (index !== playIndex) {
+                        if (item.current) {
+                            item.current.pause() 
+                        }   
+                    }
+                })
+            } else {
+                setCurrentPlaying(-1)
+                videoRefs.current[playIndex].current.pause()
+            }
+        }
+    }
+
     if (isLoading) {
         return (<Loading/>)
     }
@@ -100,7 +123,7 @@ const Feed = () => {
                     <Stories userInfo={userInfo} stories={stories} setStories={setStories} setSelectedStory={setSelectedStory} />
                 </div>
                 {
-                    posts.map((item) => {
+                    posts.map((item, index) => {
                         return (
                             <div key={item._id} className="bg-[#333] p-2 bg-opacity-30 mb-3 rounded-xl w-96 md:w-[450px]">
 
@@ -132,8 +155,11 @@ const Feed = () => {
                                 </div>
 
                                 <div onDoubleClick={async () => await updateLike(item._id, userInfo._id)}>
-                                    {item.type == "image" && <img src={item.url} alt={item.caption} className="rounded-xl flex w-full object-contain" />}
-                                    {item.type == "video" && <video controls src={item.url} alt={item.caption} className="rounded-xl flex w-full object-contain cursor-pointer" />}
+                                    {item.type == "image" && <img src={item.url} alt={item.caption} className="cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square" />}
+                                    {item.type == "video" && <span className="relative cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square">
+                                        <video onClick={() => toggleVideo(index)} ref={videoRefs?.current[index]} src={item.url} alt={item.caption} className="cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square" />
+                                        {currentPlaying !== index && <i className="fa fa-play pointer-events-none text-white text-2xl sm:text-4xl absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]"/>}
+                                    </span>}
                                 </div>
 
                                 <div className="mt-2 flex justify-between text-white text-opacity-70">
