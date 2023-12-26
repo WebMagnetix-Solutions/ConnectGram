@@ -4,6 +4,7 @@ import { getChatList } from "../../Utils/api/chat"
 import { getMyData } from "../../Auth"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
+import Loading from "../Loading"
 
 const ChatList = ({setMessageShow, newMessage}) => {
 
@@ -11,6 +12,7 @@ const ChatList = ({setMessageShow, newMessage}) => {
     const [search, setSearch] = useState("")
     const userInfo = getMyData()
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(true)
 
     const manageChatList = async (response) => {
         if (response.result) {
@@ -21,6 +23,7 @@ const ChatList = ({setMessageShow, newMessage}) => {
                 return {...item, users: [item.users[0]]}
             })
             setChats(result)
+            setIsLoading(false)
         } else {
             toast.error(response.message)
         }
@@ -47,6 +50,10 @@ const ChatList = ({setMessageShow, newMessage}) => {
         }
         const response = await getChatList(userInfo._id, search.trim())
         await manageChatList(response)
+    }
+
+    if (isLoading) {
+        return (<Loading/>)
     }
 
     return (

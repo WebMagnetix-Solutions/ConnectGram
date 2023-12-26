@@ -3,12 +3,14 @@ import { getMyData } from "../../Auth"
 import { getMyPosts, getSavedPosts } from "../../Utils/api/post"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
+import Loading from "../Loading"
 
 const MyPosts = (prop) => {
 
     const [myPosts, setMyPosts] = useState([])
     const userInfo = getMyData()
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -19,11 +21,13 @@ const MyPosts = (prop) => {
                     const response = await getSavedPosts(user._id)
                     if (response.result) {
                         setMyPosts(response.result.filter(item => item.saved.includes(userInfo._id)))
+                        setIsLoading(false)
                     } else {
                         toast.error(response.message)
                     }
                 } else {
                     setMyPosts(response.result.filter(item => item.type === prop.type))
+                    setIsLoading(false)
                 }
             } else {
                 toast.error(response.message)
@@ -31,6 +35,10 @@ const MyPosts = (prop) => {
         }
         fetchData()
     }, [prop.type])
+
+    if (isLoading) {
+        return (<div className="flex justify-center"><Loading/></div>)
+    }
 
     return (
         <div className="grid grid-cols-3 mt-10 gap-2">

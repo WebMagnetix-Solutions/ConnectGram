@@ -6,6 +6,7 @@ import { useSocket } from "../../Hooks/Context"
 import toast from "react-hot-toast"
 import { useNavigate } from "react-router-dom"
 import { isWebUri } from "valid-url"
+import Loading from "../Loading"
 
 const Messages = ({messageShow, newMessage, setMessageShow}) => {
     
@@ -16,6 +17,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
     const messagesRef = useRef(null)
     const { socket } = useSocket()
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         selectedChat.current = messageShow
@@ -23,6 +25,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
             const response = await getAllMessages(selectedChat.current._id)
             if (response.result) {
                 setMessages(response.result)
+                setIsLoading(false)
             } else {
                 toast.error(response.message)
             }
@@ -64,6 +67,10 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
         } else {
             toast.error(response.message)
         }
+    }
+
+    if (isLoading) {
+        return (<Loading/>)
     }
 
     return (

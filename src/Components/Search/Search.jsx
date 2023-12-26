@@ -2,22 +2,30 @@ import { useState } from "react"
 import { userList } from "../../Utils/api/user"
 import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
+import Loading from "../Loading"
 
 const Search = () => {
 
     const [searchResult, setSearchResult] = useState([])
     const [search, setSearch] = useState("")
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(false)
 
     const getSearchResult = async () => {
         if (search) {
+            setIsLoading(true)
             const response = await userList(search)
             if (response.result) {
                 setSearchResult(response.result)
+                setIsLoading(false)
             } else {
                 toast.error(response.message)
             }
         }
+    }
+
+    if (isLoading) {
+        return (<Loading/>)
     }
 
     return (

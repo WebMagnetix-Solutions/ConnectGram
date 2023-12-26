@@ -7,6 +7,7 @@ import EditProfile from "../Modal/EditProfile"
 import toast from "react-hot-toast"
 import FollowList from "../Modal/FollowList"
 import Verified from "../Verified"
+import Loading from "../Loading"
 
 const MyProfile = () => {
     
@@ -15,6 +16,7 @@ const MyProfile = () => {
     const [isEdit, setEdit] = useState(false)
     const [followList, setFollowList] = useState({title: "", list: []})
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(true)
     
     useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +24,7 @@ const MyProfile = () => {
             const response = await getMe(user._id)
             if (response.result) {
                 setMyData(response.result)
+                setIsLoading(false)
             } else {
                 toast.error(response.message)
             }
@@ -46,6 +49,10 @@ const MyProfile = () => {
         } else {
             toast.error(response.message)
         }
+    }
+
+    if (isLoading) {
+        return (<Loading/>)
     }
     
     return (

@@ -5,6 +5,7 @@ import { getMyData } from "../../Auth"
 import toast from "react-hot-toast"
 import Comments from "../Comments/Comments"
 import { copyToClipboard } from "../../Utils/Helper/Helper"
+import Loading from "../Loading"
 
 const SinglePost = () => {
 
@@ -17,6 +18,7 @@ const SinglePost = () => {
     const userInfo = getMyData()
     const [menuOptions, setMenuOptions] = useState("")
     const [showComment, setShowComment] = useState("")
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         if (!view) {
@@ -26,6 +28,7 @@ const SinglePost = () => {
                 const response = await getSinglePost(view)
                 if (response.result) {
                     setSinglePost(response.result[0])
+                    setIsLoading(false)
                 } else {
                     toast.error(response.message)
                 }
@@ -71,6 +74,10 @@ const SinglePost = () => {
                 return response
             }
         })
+    }
+
+    if (isLoading) {
+        return (<Loading/>)
     }
 
     return (

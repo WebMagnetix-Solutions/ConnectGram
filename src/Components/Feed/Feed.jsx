@@ -9,6 +9,7 @@ import Stories from "../Stories/Stories"
 import ViewStory from "../Modal/ViewStory"
 import { getStories } from "../../Utils/api/story"
 import ShareTo from "../Modal/ShareTo"
+import Loading from "../Loading"
 
 const Feed = () => {
 
@@ -20,6 +21,7 @@ const Feed = () => {
     const [stories, setStories] = useState([])
     const navigate = useNavigate()
     const [shareTo, setShareTo] = useState("")
+    const [isLoading, setIsLoading] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -32,6 +34,7 @@ const Feed = () => {
                     stories.result.unshift(findIndex)
                 }
                 setStories(stories.result)
+                setIsLoading(false)
             } else {
                 toast.error(stories.message)
             }
@@ -81,6 +84,10 @@ const Feed = () => {
                 return response
             }
         })
+    }
+
+    if (isLoading) {
+        return (<Loading/>)
     }
 
     return (

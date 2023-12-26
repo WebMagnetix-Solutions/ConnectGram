@@ -6,6 +6,7 @@ import toast from "react-hot-toast"
 import ViewUserPosts from "./ViewUserPosts"
 import { createChat } from "../../Utils/api/chat"
 import FollowList from "../Modal/FollowList"
+import Loading from "../Loading"
 
 const ViewUserProfile = () => {
     
@@ -17,6 +18,7 @@ const ViewUserProfile = () => {
     const searchUsername = query.get("username")
     const [userInfo, setUserInfo] = useState({})
     const navigate = useNavigate()
+    const [isLoading, setIsLoading] = useState(true)
     
     useEffect(() => {
         const fetchData = async () => {
@@ -25,15 +27,13 @@ const ViewUserProfile = () => {
             const response1 = await getMe(user._id)
             if (response1.result) {
                 setUserInfo(response1.result)
+                setIsLoading(false)
             } else {
                 toast.error(response.message)
             }
             if (response.result) {
-                if (response.result._id === userInfo._id) {
-                    navigate("/my-profile", {replace: true})
-                } else {
-                    setUserData(response.result)
-                }
+                setUserData(response.result)
+                setIsLoading(false)
             } else {
                 toast.error(response.message)
             }
@@ -68,6 +68,10 @@ const ViewUserProfile = () => {
             toast.error(response.message)
         }
     }
+
+    if (isLoading) {
+        return (<Loading/>)
+    }
     
     return (
         <Fragment>
@@ -92,19 +96,24 @@ const ViewUserProfile = () => {
                         </div>
                     </div>
                     <div className="hidden sm:flex flex-col xl:flex-row justify-center items-center gap-4">
-                        <button className="bg-blue-800 p-1 px-2 rounded-xl" onClick={async () => await manageFollow(userInfo._id, userData._id)}>{ userData.followers?.includes(userInfo._id) ? "Unfollow" : "Follow" }</button>
-                        <button className="bg-blue-800 p-1 px-2 rounded-xl" onClick={
-                            async () => {
-                                const response = await createChat(userInfo._id, userData._id)
-                                console.log(response);
-                                    if (response.result) {
-                                        navigate("/messenger")
-                                    } else {
-                                        toast.error(response.message)
+                        {
+                            userInfo._id !== userData._id ? <Fragment>
+                                <button className="bg-blue-800 p-1 px-2 rounded-xl" onClick={async () => await manageFollow(userInfo._id, userData._id)}>{ userData.followers?.includes(userInfo._id) ? "Unfollow" : "Follow" }</button>
+                                <button className="bg-blue-800 p-1 px-2 rounded-xl" onClick={
+                                    async () => {
+                                        const response = await createChat(userInfo._id, userData._id)
+                                        console.log(response);
+                                            if (response.result) {
+                                                navigate("/messenger")
+                                            } else {
+                                                toast.error(response.message)
+                                            }
+                                        }
                                     }
-                                }
-                            }
-                        >Message</button>
+                                >Message</button>
+                            </Fragment> : 
+                                <button className="p-1 px-2 bg-blue-800 rounded-xl" onClick={()=>navigate("/my-profile")}>Profile</button>
+                        }
                     </div>
                 </div>
 
@@ -117,18 +126,24 @@ const ViewUserProfile = () => {
                 </div>
 
                 <div className="flex sm:hidden flex-row justify-center items-center gap-4 w-full mt-5">
-                    <button className="bg-blue-800 p-1 px-2 rounded-xl w-full" onClick={async () => await manageFollow(userInfo._id, userData._id)}>{ userData.followers?.includes(userInfo._id) ? "Unfollow" : "Follow" }</button>
-                    <button className="bg-blue-800 p-1 px-2 rounded-xl w-full" onClick={
-                        async () => {
-                            const response = await createChat(userInfo._id, userData._id)
-                                if (response.result) {
-                                    navigate("/messenger")
-                                } else {
-                                    toast.error(response.message)
-                                }
-                            }
+                {
+                            userInfo._id !== userData._id ? <Fragment>
+                                <button className="bg-blue-800 p-1 w-full px-2 rounded-xl" onClick={async () => await manageFollow(userInfo._id, userData._id)}>{ userData.followers?.includes(userInfo._id) ? "Unfollow" : "Follow" }</button>
+                                <button className="bg-blue-800 p-1 w-full px-2 rounded-xl" onClick={
+                                    async () => {
+                                        const response = await createChat(userInfo._id, userData._id)
+                                        console.log(response);
+                                            if (response.result) {
+                                                navigate("/messenger")
+                                            } else {
+                                                toast.error(response.message)
+                                            }
+                                        }
+                                    }
+                                >Message</button>
+                            </Fragment> : 
+                                <button className="p-1 px-2 bg-blue-800 w-full rounded-xl" onClick={()=>navigate("/my-profile")}>Profile</button>
                         }
-                    >Message</button>
                 </div>
 
                 <div>

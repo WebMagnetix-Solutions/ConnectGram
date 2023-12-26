@@ -55,7 +55,7 @@ const HomeSuggestions = () => {
                                         </div>
                                     </div>
                                     <div>
-                                        <button className="p-1 px-2 bg-blue-900 rounded-xl" onClick={async () => await manageFollow(userInfo._id, item._id)}>{!item.followers?.includes(userInfo._id) ? "Follow Back" : "Follow"}</button>
+                                        <button className="p-1 px-2 whitespace-nowrap bg-blue-900 rounded-xl" onClick={async () => await manageFollow(userInfo._id, item._id)}>{!item.followers?.includes(userInfo._id) ? "Follow Back" : "Follow"}</button>
                                     </div>
                                 </div>
                             )
