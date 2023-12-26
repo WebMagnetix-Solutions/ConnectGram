@@ -50,7 +50,7 @@ const ShareTo = ({ shareTo, setShareTo, userInfo }) => {
 
     return (
         <div className={`flex w-full sm:w-11/12 md:w-9/12 lg:w-6/12 absolute z-50 justify-center bg-black h-screen duration-200 transition-all`}>
-            <div className={`px-5 py-5 w-[97vw] overflow-y-scroll shadow max-h-max shadow-black absolute flex flex-col gap-2 bg-[#222] rounded-xl duration-200 transition-all sm:w-[500px]`}>
+            <div className={`px-5 py-5 w-[97vw] overflow-y-scroll shadow h-screen shadow-black absolute flex flex-col gap-2 bg-[#222] rounded-xl duration-200 transition-all sm:w-[500px]`}>
                 <div onClick={()=>setShareTo("")} className="w-6 h-6 cursor-pointer right-2 top-2 bg-red-600 flex justify-center items-center text-white rounded-full absolute">
                     <i className="fa fa-close"/>
                 </div>
