@@ -6,6 +6,7 @@ import toast from "react-hot-toast"
 import Comments from "../Comments/Comments"
 import { copyToClipboard } from "../../Utils/Helper/Helper"
 import Loading from "../Loading"
+import ShareTo from "../Modal/ShareTo"
 
 const SinglePost = () => {
 
@@ -20,6 +21,7 @@ const SinglePost = () => {
     const [showComment, setShowComment] = useState("")
     const [isLoading, setIsLoading] = useState(true)
     const [isPlaying, setIsPlaying] = useState(false)
+    const [shareTo, setShareTo] = useState("")
 
     useEffect(() => {
         if (!view) {
@@ -85,6 +87,7 @@ const SinglePost = () => {
         <Fragment>
             {
                 singlePost._id && <Fragment>
+                    {shareTo && <ShareTo shareTo={shareTo} setShareTo={setShareTo} userInfo={userInfo} />}
                     <Comments post={showComment} posts={singlePost} setPosts={setSinglePost} setShowComment={setShowComment} />
                     <div className="pb-16 sm:pb-1 pt-3 text-white w-full px-2 sm:px-10 h-screen overflow-y-auto">
                         <div className="flex justify-center">
@@ -117,7 +120,7 @@ const SinglePost = () => {
                                 </div>
 
                                 <div onDoubleClick={async () => await updateLike(singlePost._id, userInfo._id)}>
-                                    {singlePost.type == "image" && <img src={singlePost.url} alt={singlePost.caption} className="rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square cursor-pointer" />}
+                                    {singlePost.type == "image" && <img src={singlePost.url} alt={singlePost.caption} className="rounded-xl bg-[#1c1c1c] flex w-full object-contain shadow-sm shadow-[#111] aspect-square cursor-pointer" />}
                                     {singlePost.type == "video" && <span className="relative"> 
                                         <video src={singlePost.url} onClick={(e) => {
                                             if (e.currentTarget.paused) {
@@ -127,7 +130,7 @@ const SinglePost = () => {
                                                 e.currentTarget.pause()
                                                 setIsPlaying(false)
                                             }
-                                        }} alt={singlePost.caption} className="rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square cursor-pointer" />
+                                        }} alt={singlePost.caption} className="rounded-xl bg-[#1c1c1c] flex w-full object-contain shadow-sm shadow-[#111] aspect-square cursor-pointer" />
                                         {
                                             !isPlaying && <i className="fa fa-play pointer-events-none text-white text-2xl sm:text-4xl absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]" />
                                         }
@@ -139,7 +142,7 @@ const SinglePost = () => {
                                     <div className="flex justify-between gap-3 text-lg">
                                         <i className={`fa${singlePost.likes?.includes(userInfo._id) ? `s text-red-500` : `r`} fa-heart cursor-pointer`} onClick={async () => await updateLike(singlePost._id, userInfo._id)}></i>
                                         <i className="far fa-comment cursor-pointer" onClick={() => setShowComment(singlePost._id)}></i>
-                                        <i className="far fa-paper-plane"></i>
+                                        <i className="far fa-paper-plane cursor-pointer" onClick={()=>setShareTo(singlePost._id)}></i>
                                     </div>
                                     <div className="text-lg">
                                         <i className={`fa${singlePost.saved?.includes(userInfo._id) ? `s` : `r`} fa-bookmark cursor-pointer`} onClick={async () => await updateSave(singlePost._id, userInfo._id)}></i>

@@ -155,9 +155,9 @@ const Feed = () => {
                                 </div>
 
                                 <div onDoubleClick={async () => await updateLike(item._id, userInfo._id)}>
-                                    {item.type == "image" && <img src={item.url} alt={item.caption} className="cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square" />}
+                                    {item.type == "image" && <img src={item.url} alt={item.caption} className="cursor-pointer bg-[#1c1c1c] rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square" />}
                                     {item.type == "video" && <span className="relative cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square">
-                                        <video onClick={() => toggleVideo(index)} ref={videoRefs?.current[index]} src={item.url} alt={item.caption} className="cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square" />
+                                        <video onClick={() => toggleVideo(index)} ref={videoRefs?.current[index]} src={item.url} alt={item.caption} className="cursor-pointer bg-[#1c1c1c] rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square" />
                                         {currentPlaying !== index && <i className="fa fa-play pointer-events-none text-white text-2xl sm:text-4xl absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]"/>}
                                     </span>}
                                 </div>
