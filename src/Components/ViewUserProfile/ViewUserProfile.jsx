@@ -71,7 +71,7 @@ const ViewUserProfile = () => {
     
     return (
         <Fragment>
-            {userData._id && <FollowList list={followList} setMyData={setUserData} myData={userData} setFollowList={setFollowList} />}
+            {userData._id && <FollowList list={followList} setMyData={setUserInfo} myData={userInfo} setFollowList={setFollowList} />}
             <div className="pb-16 sm:pb-1 pt-3 text-white w-full px-2 sm:px-10 h-screen overflow-y-auto">
                 <div className="flex sm:justify-between">
                     <div className="flex justify-center flex-col items-center">

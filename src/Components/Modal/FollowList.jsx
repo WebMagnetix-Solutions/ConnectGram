@@ -46,7 +46,7 @@ const FollowList = ({ list, myData, setMyData, setFollowList }) => {
                                     </div>
                                 </div>
                                 <div>
-                                    {userInfo.username === item.username ? `You` : <button onClick={async () => await manageFollow(myData._id, item._id)} className="bg-blue-900 p-1 px-2 rounded-xl text-white">{myData.following?.includes(item._id) ? "Unfollow" : myData.followers?.includes(item._id) ? "Follow Back" : "Follow"}</button>}
+                                    {userInfo.username === item.username ? <span className="text-white">You</span> : <button onClick={async () => await manageFollow(myData._id, item._id)} className="bg-blue-900 p-1 px-2 rounded-xl text-white">{myData.following?.includes(item._id) ? "Unfollow" : myData.followers?.includes(item._id) ? "Follow Back" : "Follow"}</button>}
                                 </div>
                             </div>
                         )
