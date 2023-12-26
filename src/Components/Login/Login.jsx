@@ -12,6 +12,7 @@ const Login = () => {
             password: ""
         }
     )
+    const [loginClicked, setLoginClicked] = useState(false)
 
     const navigate = useNavigate()
 
@@ -21,12 +22,16 @@ const Login = () => {
 
     const handleLogin = async (e) => {
         e.preventDefault()
-        const response = await userLogin(formData)
-        if (response.token) {
-            setAuth(response.token, response.user)
-            navigate("/", {replace: true})
-        } else {
-            toast.error(response.message)
+        if (!loginClicked) {
+            setLoginClicked(true)
+            const response = await userLogin(formData)
+            if (response.token) {
+                setAuth(response.token, response.user)
+                navigate("/", {replace: true})
+            } else {
+                setLoginClicked(false)
+                toast.error(response.message)
+            }
         }
     }
 
@@ -39,7 +44,7 @@ const Login = () => {
                 <input type="password" name="password" value={formData.password} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Password" className="w-full mb-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
                 <button className="bg-blue-900 text-white w-full p-1 rounded-xl bg-opacity-90 text-lg">Login</button>
                 <div className="flex flex-col gap-2 text-white text-center mt-5">
-                    <p>Don{`'`}t have an account? <span className="cursor-pointer" onClick={()=>navigate("/signup")}>Register</span></p>
+                    <p>Don{`'`}t have an account? <span className="cursor-pointer" onClick={()=> navigate("/signup")}>Register</span></p>
                     <p>Don{`'`}t remember password? <span className="cursor-pointer">Reset here</span></p>
                 </div>
             </form>

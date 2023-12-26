@@ -16,6 +16,7 @@ const Signup = () => {
             confirm_password:""
         }
     )
+    const [signupClicked, setSignupClicked] = useState(false)
     const [formError, setFormError] = useState({})
     const navigate = useNavigate()
 
@@ -39,12 +40,16 @@ const Signup = () => {
 
     const handleSignup = async (e) => {
         e.preventDefault()
-        const response = await userSignup(formData)
-        if (response.token) {
-            setAuth(response.token, response.user)
-            navigate("/", {replace: true})
-        } else {
-            toast.error(response.message)
+        if (!signupClicked) {
+            setSignupClicked(true)
+            const response = await userSignup(formData)
+            if (response.token) {
+                setAuth(response.token, response.user)
+                navigate("/", {replace: true})
+            } else {
+                setSignupClicked(false)
+                toast.error(response.message)
+            }
         }
     }
 

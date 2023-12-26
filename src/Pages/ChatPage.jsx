@@ -2,8 +2,8 @@ import { useEffect, useRef, useState } from "react"
 import ChatList from "../Components/Messages/ChatList"
 import Messages from "../Components/Messages/Messages"
 import { useSocket } from "../Hooks/Context"
-import { getMyData } from "../Auth"
 import toast from "react-hot-toast"
+import { getMyData } from "../Auth"
 
 const ChatPage = () => {
 
@@ -40,7 +40,9 @@ const ChatPage = () => {
             socket.on("ReceivedMessage", handleNewMessage)
         }
         return () => {
-            socket.off("ReceivedMessage")
+            if (socket) {
+                socket.off("ReceivedMessage")
+            }
         }
     }, [socket])
 

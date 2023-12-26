@@ -8,6 +8,7 @@ import { copyToClipboard } from "../../Utils/Helper/Helper"
 import Stories from "../Stories/Stories"
 import ViewStory from "../Modal/ViewStory"
 import { getStories } from "../../Utils/api/story"
+import ShareTo from "../Modal/ShareTo"
 
 const Feed = () => {
 
@@ -18,6 +19,7 @@ const Feed = () => {
     const [selectedStory, setSelectedStory] = useState({})
     const [stories, setStories] = useState([])
     const navigate = useNavigate()
+    const [shareTo, setShareTo] = useState("")
 
     useEffect(() => {
         const fetchData = async () => {
@@ -84,6 +86,7 @@ const Feed = () => {
     return (
 
         <Fragment>
+            {shareTo && <ShareTo shareTo={shareTo} setShareTo={setShareTo} userInfo={userInfo} />}
             {userInfo._id && <ViewStory selectedStory={selectedStory} setStories={setStories} setSelectedStory={setSelectedStory} />}
             <div className="pb-14 sm:pb-0 bg-[#222] flex h-screen flex-col overflow-y-auto">
                 <div className="mt-2 bg-opacity-30 mb-3 rounded-xl w-96 md:w-[450px]">
@@ -131,7 +134,7 @@ const Feed = () => {
                                     <div className="flex justify-between gap-3 text-lg">
                                         <i className={`fa${item.likes?.includes(userInfo._id) ? `s text-red-500` : `r`} fa-heart cursor-pointer`} onClick={async () => await updateLike(item._id, userInfo._id)}></i>
                                         <i className="far fa-comment cursor-pointer" onClick={() => setShowComment(item._id)}></i>
-                                        <i className="far fa-paper-plane"></i>
+                                        <i className="far fa-paper-plane cursor-pointer" onClick={()=>setShareTo(item._id)}></i>
                                     </div>
                                     <div className="text-lg">
                                         <i className={`fa${item.saved?.includes(userInfo._id) ? `s` : `r`} fa-bookmark cursor-pointer`} onClick={async () => await updateSave(item._id, userInfo._id)}></i>

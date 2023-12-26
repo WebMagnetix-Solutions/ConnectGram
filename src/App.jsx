@@ -1,10 +1,31 @@
 import { useEffect } from "react"
 import AppRouter from "./Routes/Routes"
 import {v4 as uuidv4} from "uuid"
+import { useSocket } from "./Hooks/Context"
+import toast from "react-hot-toast"
 
 const App = () => {
 
     let touchTime = null
+    const { socket } = useSocket()
+    const currentPath = window.location.pathname
+
+    const handleNewMessage = (response) => {
+        return toast.success(`New message: ${response.sender.name}`)
+    }
+
+    useEffect(() => {
+        if (currentPath !== "/messenger") {
+            if (socket) {
+                socket.on("ReceivedMessage", handleNewMessage)
+            }
+            return () => {
+                if (socket) {
+                    socket.off("ReceivedMessage")
+                }
+            }
+        }
+    }, [socket])
 
     const touchStart = () => {
         touchTime = Date.now()

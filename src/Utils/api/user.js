@@ -4,19 +4,19 @@ import { regex } from "../Helper/Helper"
 export const userLogin = async ({username, password}) => {
     try {
         if (!username && !password) {
-            return "Fields are empty"
+            return {message: "Fields are empty"}
         }
         if (!username) {
-            return 'Username is empty'
+            return {message: 'Username is empty'}
         }
         if (! regex.username.test(username)) {
-            return "Invalid username"    
+            return {message: "Invalid username"} 
         }
         if (!password) {
-            return 'Password is empty'
+            return {message: 'Password is empty'}
         }
         if (!regex.password.test(password)) {
-            return "Invalid Password"    
+            return {message: "Invalid Password"}    
         } 
         const { data } = await api.get(`/user/login?username=${username}&password=${password}`)
         return data
@@ -40,25 +40,25 @@ export const userSignup = async (userData) => {
         for (const key in userData) {
             if (!userData[key]) {
                 if (key === "confirm_password") {
-                    return "Confirm password is empty"
+                    return {message: "Confirm password is empty"}
                 }
-                return key.replace(key[0], key[0].toUpperCase())+" is empty"
+                return {message: key.replace(key[0], key[0].toUpperCase())+" is empty"}
             }
         }
         if (! regex.name.test(name)) {
-            return "Invalid name"    
+            return {message: "Invalid name"}    
         }
         if (! regex.username.test(username)) {
-            return "Invalid username"    
+            return {message: "Invalid username"}    
         }
         if (! regex.email.test(email)) {
-            return "Invalid email"    
+            return {message: "Invalid email"}    
         }
         if (! regex.password.test(password)) {
-            return "Invalid password"    
+            return {message: "Invalid password"}    
         }
         if (password !== confirm_password) {
-            return "Password does not match"
+            return {message: "Password does not match"}
         }
         const { data } = await api.post(`/user/signup`, userData)
         return data
