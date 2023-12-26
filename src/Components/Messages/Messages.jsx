@@ -72,7 +72,7 @@ const Messages = ({messageShow, newMessage, setMessageShow}) => {
                 {
                     messages.map((item, index) => {
                         const textArray = item?.content?.split(" ")
-                        const content = textArray.map((items, key) => isWebUri(items) ? (<span key={key} className="text-blue-900 cursor-pointer" onClick={() => window.open(items, "_blank")}> {items} </span>) : ( items ))
+                        const content = textArray.map((items, key) => isWebUri(items) ? (<span key={key} className="text-blue-700 cursor-pointer" onClick={() => window.open(items, "_blank")}>{items} </span>) : (items+" "))
                         return (
                             <div key={index} className={`w-full flex ${item.sender._id === userInfo._id ? `justify-end` : `justify-start`} ${messages.length!==index+1 && `mb-3`}`}>
                                 <div className={`p-1 text-xs min-w-[100px] max-w-[250px] sm:text-base sm:max-w-[350px] whitespace-pre-wrap rounded-xl ${item.sender._id === userInfo._id ? `rounded-br-none` : `rounded-bl-none`} bg-opacity-30 px-2 ${item.sender._id === userInfo._id ? `bg-gray-600` : `bg-[#333]`}`}>
