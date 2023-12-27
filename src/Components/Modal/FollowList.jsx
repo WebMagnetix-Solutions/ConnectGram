@@ -27,7 +27,7 @@ const FollowList = ({ list, myData, setMyData, setFollowList }) => {
 
     return (
         <div className={`flex w-full sm:w-11/12 md:w-9/12 lg:w-6/12 absolute z-50 justify-center bg-black h-screen ${list.title && list.list?.length>0 ? `bg-opacity-25 pointer-events-auto` : `bg-opacity-0 pointer-events-none`} duration-200 transition-all`}>
-            <div className={`px-5 py-5 w-[97vw] overflow-y-scroll shadow max-h-max shadow-black absolute flex flex-col gap-2 bg-[#222] rounded-xl duration-200 transition-all sm:w-[500px] ${list.title && list.list?.length>0 ? `opacity-100 p-3` : `opacity-0`}`}>
+            <div className={`px-5 py-5 w-[97vw] overflow-y-scroll shadow h-screen shadow-black absolute flex flex-col gap-2 bg-[#222] rounded-xl duration-200 transition-all sm:w-[500px] ${list.title && list.list?.length>0 ? `opacity-100 p-3` : `opacity-0`}`}>
                 <div onClick={()=>setFollowList({title:"",list:[]})} className="w-4 h-4 cursor-pointer text-white absolute right-2 top-2 flex justify-center items-center bg-red-600 rounded-full">
                     <i className="fa text-xs fa-close"/>
                 </div>
