@@ -61,7 +61,7 @@ const Comments = ({ post, setShowComment, posts, setPosts }) => {
     }
 
     return (
-        <div className={`h-4/5 break-all text-white w-96 md:w-[450px] rounded-t-2xl bg-[#222] shadow shadow-black transition-all duration-300 fixed ${post ? `bottom-0` : `bottom-[-100rem]`} overflow-y-auto`}>
+        <div className={`h-4/5 break-all z-[1] text-white w-96 md:w-[450px] rounded-t-2xl bg-[#222] shadow shadow-black transition-all duration-300 fixed ${post ? `bottom-0` : `bottom-[-100rem]`} overflow-y-auto`}>
             <div className="w-full h-4/5">
                 <div className="h-32 bottom-8 sm:bottom-0 pt-5 bg-[#222] shadow shadow-black">
                     <div className="flex justify-between px-2">

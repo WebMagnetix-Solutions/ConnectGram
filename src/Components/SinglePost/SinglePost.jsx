@@ -121,7 +121,7 @@ const SinglePost = () => {
 
                                 <div onDoubleClick={async () => await updateLike(singlePost._id, userInfo._id)}>
                                     {singlePost.type == "image" && <img src={singlePost.url} alt={singlePost.caption} className="rounded-xl bg-[#1c1c1c] flex w-full object-contain shadow-sm shadow-[#111] aspect-square cursor-pointer" />}
-                                    {singlePost.type == "video" && <span className="relative"> 
+                                    {singlePost.type == "video" && <span className="relative cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square"> 
                                         <video src={singlePost.url} onClick={(e) => {
                                             if (e.currentTarget.paused) {
                                                 e.currentTarget.play()
