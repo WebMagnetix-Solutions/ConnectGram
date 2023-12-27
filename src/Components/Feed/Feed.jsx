@@ -1,5 +1,5 @@
 import { Fragment, createRef, useEffect, useRef, useState } from "react"
-import { deletePost, getFollowingPost, likeOrDislike, saveOrUnSave } from "../../Utils/api/post"
+import { addViews, deletePost, getFollowingPost, likeOrDislike, saveOrUnSave } from "../../Utils/api/post"
 import { getMyData } from "../../Auth"
 import toast from "react-hot-toast"
 import Comments from "../Comments/Comments"
@@ -109,6 +109,19 @@ const Feed = () => {
         }
     }
 
+    const addView = async (post_id, user_id) => {
+        const resData = await addViews(post_id, user_id)
+        if (resData.result) {
+            const response = posts.map(item => {
+                if (item._id === post_id && !item.views?.includes(user_id)) {
+                    return {...item, views: resData.result}
+                }
+                return item
+            })
+            setPosts(response)
+        }  
+    }
+
     if (isLoading) {
         return (<Loading/>)
     }
@@ -156,7 +169,7 @@ const Feed = () => {
 
                                 <div onDoubleClick={async () => await updateLike(item._id, userInfo._id)}>
                                     {item.type == "image" && <img src={item.url} alt={item.caption} className="cursor-pointer bg-[#1c1c1c] rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square" />}
-                                    {item.type == "video" && <span className="relative cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square">
+                                    {item.type == "video" && <span onClick={async ()=> !item.views?.includes(userInfo._id) && await addView(item._id, userInfo._id)} className="relative cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square">
                                         <video onClick={() => toggleVideo(index)} ref={videoRefs?.current[index]} src={item.url} alt={item.caption} className="cursor-pointer bg-[#1c1c1c] rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square" />
                                         {currentPlaying !== index && <i className="fa fa-play pointer-events-none text-white text-2xl sm:text-4xl absolute top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]"/>}
                                     </span>}
@@ -175,7 +188,7 @@ const Feed = () => {
 
                                 </div>
 
-                                <p className="text-sm mb-1 text-white text-opacity-70">{item.likes?.length} Likes</p>
+                                <p className="text-sm mb-1 text-white text-opacity-70">{item.type==="video" && <span>{item.views?.length} Views</span>} <span>{item.likes?.length} Likes</span></p>
                                 <p className="text-sm mb-1 text-white text-opacity-70">{item.comments?.length} Comments</p>
 
                                 <div className="break-words text-xs text-white text-opacity-50">

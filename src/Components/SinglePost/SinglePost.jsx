@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useState } from "react"
 import { useLocation, useNavigate } from "react-router-dom"
-import { deletePost, getSinglePost, likeOrDislike, saveOrUnSave } from "../../Utils/api/post"
+import { addViews, deletePost, getSinglePost, likeOrDislike, saveOrUnSave } from "../../Utils/api/post"
 import { getMyData } from "../../Auth"
 import toast from "react-hot-toast"
 import Comments from "../Comments/Comments"
@@ -79,6 +79,14 @@ const SinglePost = () => {
         })
     }
 
+    const addView = async (post_id, user_id) => {
+        const resData = await addViews(post_id, user_id)
+            if (resData.result) {
+                singlePost.views?.push(user_id)
+                setSinglePost({ ...singlePost, views: resData.result })
+            }
+    }
+
     if (isLoading) {
         return (<Loading/>)
     }
@@ -121,7 +129,7 @@ const SinglePost = () => {
 
                                 <div onDoubleClick={async () => await updateLike(singlePost._id, userInfo._id)}>
                                     {singlePost.type == "image" && <img src={singlePost.url} alt={singlePost.caption} className="rounded-xl bg-[#1c1c1c] flex w-full object-contain shadow-sm shadow-[#111] aspect-square cursor-pointer" />}
-                                    {singlePost.type == "video" && <span className="relative cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square"> 
+                                    {singlePost.type == "video" && <span onClick={()=> !singlePost.views?.includes(userInfo._id) && addView(singlePost._id, userInfo._id)} className="relative cursor-pointer rounded-xl flex w-full object-contain shadow-sm shadow-[#111] aspect-square"> 
                                         <video src={singlePost.url} onClick={(e) => {
                                             if (e.currentTarget.paused) {
                                                 e.currentTarget.play()
@@ -150,7 +158,7 @@ const SinglePost = () => {
 
                                 </div>
 
-                                <p className="text-sm mb-1 text-white text-opacity-70">{singlePost.likes?.length} Likes</p>
+                                <p className="text-sm mb-1 text-white text-opacity-70">{singlePost.type==="video" && <span>{singlePost.views?.length} Views</span>} <span>{singlePost.likes?.length} Likes</span></p>
                                 <p className="text-sm mb-1 text-white text-opacity-70">{ singlePost.comments?.length} Comments</p>
 
                                 <div className="break-words text-xs text-white text-opacity-50">

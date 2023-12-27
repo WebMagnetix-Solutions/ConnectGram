@@ -5,6 +5,7 @@ import SignupPage from "../Pages/SignupPage"
 import { Authentication } from "../ProtectedRoute"
 import Page404 from "../Components/Page404"
 import NoNetwork from "../Components/NoNetwork"
+import UserVerify from "../Components/UserVerify"
 
 const AppRouter = () => {
 
@@ -19,6 +20,7 @@ const AppRouter = () => {
                 {
                     commonPath.map(item => ( <Route exact key={item} path={item} element={<Authentication><MainPage /></Authentication>} /> ))
                 }
+                <Route path="/verify/:id" Component={UserVerify}/>
                 <Route path={`/lost/connection/${route}`} Component={NoNetwork} />
                 <Route path="*" Component={Page404}/>
             </Routes>

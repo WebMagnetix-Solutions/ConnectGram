@@ -86,6 +86,15 @@ export const commentLikeOrDislike = async (comment_id, user_id) => {
     }
 }
 
+export const addViews = async (post_id, user_id) => {
+    try {
+        const { data } = await api.patch(`/post/view`, { post_id, user_id })
+        return data
+    } catch (err) {
+        return { message : err?.response?.data?.message || err.message} 
+    }
+}
+
 export const saveOrUnSave = async (post_id, user_id) => {
     try {
         const { data } = await api.patch(`/post/save`, { post_id, user_id })

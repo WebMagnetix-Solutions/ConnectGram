@@ -1,9 +1,9 @@
 import { useNavigate } from "react-router-dom"
 import { userSignup } from "../../Utils/api/user"
 import { useState } from "react"
-import { setAuth } from "../../Auth"
 import { registerValidation } from "../../Utils/Helper/Helper"
 import toast from "react-hot-toast"
+import ButtonLoader from "../ButtonLoader"
 
 const Signup = () => {
 
@@ -43,9 +43,12 @@ const Signup = () => {
         if (!signupClicked) {
             setSignupClicked(true)
             const response = await userSignup(formData)
-            if (response.token) {
-                setAuth(response.token, response.user)
-                navigate("/", {replace: true})
+            if (response.result) {
+                toast.success(response.message)
+                const timeOut = setTimeout(() => {
+                    clearTimeout(timeOut)
+                    navigate("/login", {replace: true})
+                }, 1500);
             } else {
                 setSignupClicked(false)
                 toast.error(response.message)
@@ -69,7 +72,7 @@ const Signup = () => {
                 {formError.password && <span className="text-xs text-red-500">{formError.password}</span>}
                 <input type="password" name="confirm_password" value={formData.confirm_password} onChange={e => updateForm(e.target.name, e.target.value)} placeholder="Confirm Password" className="w-full mt-4 text-white outline-none rounded-xl p-2 bg-[#111] bg-opacity-50 md:bg-[#222]" />
                 {formError.confirm_password && <span className="text-xs text-red-500">{formError.confirm_password}</span>}
-                <button className="bg-blue-900 mt-4 text-white w-full p-1 rounded-xl bg-opacity-90 text-lg">Register</button>
+                <button className="bg-blue-900 mt-4 text-white w-full p-1 rounded-xl bg-opacity-90 text-lg">{signupClicked ? <ButtonLoader /> : "Register"}</button>
                 
                 <div className="flex flex-col gap-2 text-white text-center mt-5">
                     <p>Already have an account? <span onClick={()=>navigate("/login")} className="cursor-pointer">Log In</span></p>

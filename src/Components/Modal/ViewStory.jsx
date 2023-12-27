@@ -14,7 +14,7 @@ const ViewStory = ({ selectedStory, setStories, setSelectedStory }) => {
     return (
         <div className={`flex cursor-pointer w-full sm:w-11/12 md:w-9/12 lg:w-6/12 absolute z-50 bg-black ${selectedStory?._id ? `pointer-events-auto bg-opacity-70` : `pointer-events-none bg-opacity-0`} justify-center h-screen duration-500 transition-all`}>
             <div className={`mx-10 justify-center items-center ${selectedStory?._id ? `opacity-100 flex` : `opacity-0 hidden`} justify-center h-screen duration-500 transition-all`}>
-                <img src={selectedStory.url} alt="story" className="rounded-xl object-contain h-[85vh] border-2 border-white border-opacity-30"/>
+                <img src={selectedStory.url} alt="story" className="rounded-xl object-contain h-[85vh]"/>
                 {userInfo._id === selectedStory?.user?.[0]._id && <p className="text-white top-2 absolute left-1/2 translate-x-[-50%]"><i className="fa fa-eye" /> {selectedStory?.views?.length}</p>}
                 <div className="top-1 right-1 absolute flex gap-3">
                     {userInfo._id === selectedStory?.user?.[0]?._id && <p onClick={async () => {

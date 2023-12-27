@@ -133,3 +133,12 @@ export const getFollowings = async (user_id) => {
         return { message : err?.response?.data?.message || err.message} 
     }
 }
+
+export const validUser = async (user_id) => {
+    try {
+        const { data } = await api.get(`/user/valid/${user_id}`)
+        return data
+    } catch (err) {
+        return { message : err?.response?.data?.message || err.message} 
+    }
+}

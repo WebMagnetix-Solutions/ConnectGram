@@ -8,6 +8,7 @@ const Stories = ({userInfo, stories, setStories, setSelectedStory}) => {
 
     const [myData, setMyData] = useState({})
     const [storyMedia, setStoryMedia] = useState("")
+    const [clicked, setClicked] = useState(false)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,6 +23,7 @@ const Stories = ({userInfo, stories, setStories, setSelectedStory}) => {
     }, [])
 
     const handleConfirmation = async (value) => {
+        setClicked(true)
         if (!value) {
             setStoryMedia("")
             return toast.error("Cancelled!")
@@ -38,10 +40,12 @@ const Stories = ({userInfo, stories, setStories, setSelectedStory}) => {
                     setStoryMedia("")
                     return "Story updated"
                 } else {
+                    setClicked(false)
                     return response.message
                 }
             },
             error: (response) => {
+                setClicked(false)
                 return response
             }
         })
@@ -83,9 +87,9 @@ const Stories = ({userInfo, stories, setStories, setSelectedStory}) => {
     return (
         <Fragment>
             <div className="bg-[#333] bg-opacity-30 rounded-xl overflow-auto inline-block whitespace-nowrap pt-2 pb-1 px-1 w-full cursor-pointer">
-                <label className={`shadow cursor-pointer shadow-black relative w-16 h-16 inline-block rounded-full mr-2`}>
+                <label className={`shadow cursor-pointer border-2 border-blue-white shadow-black relative w-16 h-16 inline-block rounded-full mr-2`}>
                     <i className="fa fa-plus absolute text-blue-800 font-extrabold top-1/2 left-1/2 translate-x-[-50%] translate-y-[-50%]"/>
-                    <img alt="MyImage" src={storyMedia ? URL.createObjectURL(storyMedia) : myData.pic} className="rounded-full w-16 h-16 object-fill opacity-20" />
+                    <img alt="MyImage" src={storyMedia ? URL.createObjectURL(storyMedia) : myData.pic} className="rounded-full object-cover w-16 h-16 opacity-20" />
                     <input type="file" onChange={(e) => {
                         const file = e.target.files[0]
                         if (file.type.split("/")[0] !== "image") {
@@ -93,26 +97,28 @@ const Stories = ({userInfo, stories, setStories, setSelectedStory}) => {
                         }
                         setStoryMedia(file)
                     }} className="hidden" />
-                    <p className="text-[10px] text-center text-white mt-1 w-16 overflow-scroll">{ myData.name }</p>
+                    <p className="text-[10px] font-semibold text-center text-white mt-1 w-16 overflow-scroll">Add Story</p>
                 </label>
                 {
                     stories.map((item, index) => {
                         return (
                             <div onClick={async ()=>await selectStory(item)} key={item._id} className={`shadow border-2 ${item.user?.[0]?._id===userInfo._id ? `border-white` : item.views.includes(userInfo._id) ? `border-red-600` : `border-green-700`} relative shadow-black w-16 h-16 inline-block rounded-full ${stories.length!==index+1 && `mr-2`}`}>
-                                <img src={item.user?.[0]?.pic} className="rounded-full object-fill z-10" />
-                                <p className="text-[10px] text-center text-white mt-1 w-16 overflow-scroll">{ item.posted_by===userInfo._id ? userInfo.name : item.user?.[0]?.name }</p>
+                                <img src={item.user?.[0]?.pic} className="rounded-full object-cover  w-16 h-16 opacity-20" />
+                                <p className="text-[10px] font-semibold text-center text-white mt-1 w-16 overflow-scroll">{ item.posted_by===userInfo._id ? userInfo.name : item.user?.[0]?.name }</p>
                             </div>
                         )
                     })
                 }
             </div>
-            <div className={`bg-[#333] z-10 bg-opacity-30 rounded-xl flex flex-col pt-2 pb-1 px-1 w-full cursor-pointer ${!storyMedia && "hidden"} transition-all duration-500`}>
-                <p className="text-center text-white mb-2">Are you sure to send this story?</p>
-                <div className="flex justify-evenly gap-5">
+            {
+                !clicked && <div className={`bg-[#333] z-10 bg-opacity-30 rounded-xl flex flex-col pt-2 pb-1 px-1 w-full cursor-pointer ${!storyMedia && "hidden"} transition-all duration-500`}>
+                    <p className="text-center text-white mb-2">Are you sure to send this story?</p>
+                    <div className="flex justify-evenly gap-5">
                     <button className="p-1 w-full bg-red-500 rounded-xl bg-opacity-60 text-white" onClick={()=>handleConfirmation(0)}>Cancel</button>
                     <button className="p-1 w-full bg-green-500 rounded-xl bg-opacity-60 text-white" onClick={() => handleConfirmation(1)}>Send</button>
                 </div>
             </div>
+            }
         </Fragment>
     )
 }
