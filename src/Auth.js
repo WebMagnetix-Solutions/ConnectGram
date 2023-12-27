@@ -1,5 +1,5 @@
 export const getAuth = () => {
-    const access_token = localStorage.getItem("__access_token__")
+    const access_token = localStorage.getItem("_access_token_")
     if (access_token) {
         return access_token
     } else {
@@ -8,16 +8,16 @@ export const getAuth = () => {
 }
 
 export const getMyData = () => {
-    const user = localStorage.getItem("__user__")
+    const user = localStorage.getItem("_user_")
     return user ? JSON.parse(user) : null
 }
 
 export const setAuth = (access_token, user) => {
-    localStorage.setItem("__access_token__", access_token)
-    localStorage.setItem("__user__", JSON.stringify(user))
+    localStorage.setItem("_access_token_", access_token)
+    localStorage.setItem("_user_", JSON.stringify(user))
 }
 
 export const removeAuth = () => {
-    localStorage.removeItem("__access_token__")
-    localStorage.removeItem("__user__")
+    localStorage.removeItem("_access_token_")
+    localStorage.removeItem("_user_")
 }
