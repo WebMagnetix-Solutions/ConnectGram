@@ -13,7 +13,7 @@ const SideBar = () => {
     return (
         <Fragment>
             <div className="hidden sm:flex flex-col md:justify-around justify-center sm:col-span-1 text-xl md:text-base md:col-span-3 lg:col-span-2 h-screen bg-[#333] bg-opacity-30 w-full items-center">
-                <div className="hidden md:flex">
+                <div className="hidden md:flex px-3">
                     <img src="./logo.png" alt="logo"/>
                 </div>
                 <div className="w-full px-3 text-white">
