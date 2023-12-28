@@ -10,6 +10,7 @@ import ViewStory from "../Modal/ViewStory"
 import { getStories } from "../../Utils/api/story"
 import ShareTo from "../Modal/ShareTo"
 import Loading from "../Loading"
+import CreateMention from "../CreateMention"
 
 const Feed = () => {
 
@@ -192,7 +193,7 @@ const Feed = () => {
                                 <p className="text-sm mb-1 text-white text-opacity-70">{item.comments?.length} Comments</p>
 
                                 <div className="break-words text-xs text-white text-opacity-50">
-                                    <span className="font-semibold text-white text-opacity-80">{item.user[0].username}</span> {item.caption} <span className="text-blue-600">{item.tags.join(" ")}</span>
+                                    <span className="font-semibold text-white text-opacity-80">{item.user[0].username}</span> {item.caption && <CreateMention text={item.caption} />} <span className="text-blue-600">{item.tags.join(" ")}</span>
                                 </div>
 
                             </div>

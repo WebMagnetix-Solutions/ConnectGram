@@ -8,6 +8,7 @@ import toast from "react-hot-toast"
 import FollowList from "../Modal/FollowList"
 import Verified from "../Verified"
 import Loading from "../Loading"
+import CreateMention from "../CreateMention"
 
 const MyProfile = () => {
     
@@ -88,7 +89,7 @@ const MyProfile = () => {
                     <p className="">{myData.name}</p>
                     <p className="text-sm flex items-center">@{myData.username} <Verified verified={myData.verified} /></p>
                     <div className="whitespace-pre-wrap mt-2">
-                        {myData.bio}
+                        {myData.bio && <CreateMention text={myData.bio} />}
                     </div>
                 </div>
 

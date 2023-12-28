@@ -4,6 +4,7 @@ import { addComment, commentLikeOrDislike, getComments } from "../../Utils/api/p
 import toast from "react-hot-toast"
 import { getMyData } from "../../Auth"
 import { getMoment } from "../../Utils/Helper/Helper"
+import CreateMention from "../CreateMention"
 
 const Comments = ({ post, setShowComment, posts, setPosts }) => {
 
@@ -96,7 +97,7 @@ const Comments = ({ post, setShowComment, posts, setPosts }) => {
                                                     <p className="text-[9px]">{item.likes.length}</p>
                                                 </div>
                                             </div>
-                                            <p className="text-xs mb-5 mt-[-8px] cursor-pointer">{item.message}</p>
+                                            <p className="text-xs mb-5 mt-[-8px] cursor-pointer">{item.message && <CreateMention text={item.message} />}</p>
                                         </div>
                                     </div>
                                 </div>

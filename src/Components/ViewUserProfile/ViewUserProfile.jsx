@@ -7,6 +7,7 @@ import ViewUserPosts from "./ViewUserPosts"
 import { createChat } from "../../Utils/api/chat"
 import FollowList from "../Modal/FollowList"
 import Loading from "../Loading"
+import CreateMention from "../CreateMention"
 
 const ViewUserProfile = () => {
     
@@ -39,7 +40,7 @@ const ViewUserProfile = () => {
             }
         }
         fetchData()
-    }, [])
+    }, [searchUsername])
 
     const fetchFollow = async (type, user_id) => {
         let response = null 
@@ -121,7 +122,7 @@ const ViewUserProfile = () => {
                     <p className="">{userData.name}</p>
                     <p className="text-sm flex items-center">@{userData.username} { userData.verified && <img className="w-3 h-3 mx-1 mt-0.5 " src={ import.meta.env.VITE_VERIFY } /> }</p>
                     <div className="whitespace-pre-wrap mt-2">
-                        {userData.bio}
+                        {userData.bio && <CreateMention text={userData.bio} />}
                     </div>
                 </div>
 

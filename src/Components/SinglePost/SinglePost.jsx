@@ -7,6 +7,7 @@ import Comments from "../Comments/Comments"
 import { copyToClipboard } from "../../Utils/Helper/Helper"
 import Loading from "../Loading"
 import ShareTo from "../Modal/ShareTo"
+import CreateMention from "../CreateMention"
 
 const SinglePost = () => {
 
@@ -162,7 +163,7 @@ const SinglePost = () => {
                                 <p className="text-sm mb-1 text-white text-opacity-70">{ singlePost.comments?.length} Comments</p>
 
                                 <div className="break-words text-xs text-white text-opacity-50">
-                                    <span className="font-semibold text-white text-opacity-80">{singlePost.user[0]?.username}</span> {singlePost.caption} <span className="text-blue-600">{ singlePost.tags.join(" ") }</span>
+                                    <span className="font-semibold text-white text-opacity-80">{singlePost.user[0]?.username}</span> {singlePost.caption && <CreateMention text={singlePost.caption} />} <span className="text-blue-600">{ singlePost.tags.join(" ") }</span>
                                 </div>
 
                             </div>
