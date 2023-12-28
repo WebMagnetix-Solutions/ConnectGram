@@ -3,10 +3,12 @@
 import { useEffect, useState } from "react"
 import { profileEdit } from "../../Utils/api/user"
 import toast from "react-hot-toast"
+import ButtonLoader from "../ButtonLoader"
 
 const EditProfile = ({ setMyData, myData, setEdit, isEdit }) => {
 
     const [formData, setFormData] = useState({ name: "", username: "", pic: "", bio: "" })
+    const [isClicked, setClicked] = useState(false)
     
     const setDefault = () => {
         setFormData({
@@ -45,11 +47,15 @@ const EditProfile = ({ setMyData, myData, setEdit, isEdit }) => {
         if (formData.bio && myData.bio !== formData.bio ) {
             newForm.append("bio", formData.bio)
         }
+        setClicked(true)
         const response = await profileEdit(newForm)
         if (response.result) {
             setMyData(response.result)
+            toast.success("Profile updated")
+            setClicked(false)
             setEdit(false)
         } else {
+            setClicked(false)
             toast.error(response.message)
         }
     }
@@ -71,7 +77,7 @@ const EditProfile = ({ setMyData, myData, setEdit, isEdit }) => {
                     <input value={formData.username} onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})} name="username" placeholder="Username" className="outline-none p-2 mb-2 bg-[#1c1c1c] rounded-xl w-full" />
                     <textarea placeholder="Bio" value={formData.bio} onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})} name="bio" className="outline-none p-2 mb-2 bg-[#1c1c1c] rounded-xl w-full resize-none" rows={4}></textarea>
                     <div className="flex justify-center w-full gap-4">
-                        <button className="w-full bg-violet-900 p-1 rounded-xl">Update</button>
+                        <button className="w-full bg-violet-900 p-1 rounded-xl">{isClicked ? <ButtonLoader /> : "Update"}</button>
                         <button type="button" className="w-full bg-red-900 p-1 rounded-xl" onClick={() => { setDefault(); setEdit(false) }}>Cancel</button>
                     </div>
                 </form>
