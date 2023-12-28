@@ -71,7 +71,15 @@ const EditProfile = ({ setMyData, myData, setEdit, isEdit }) => {
                     <h1 className="text-lg text-center">Edit Profile</h1>
                     <label className="mt-5 cursor-pointer relative flex justify-center mb-4">
                         <img src={formData.pic?.name ? URL.createObjectURL(formData.pic) : formData.pic} alt={formData.username} className="w-20 h-20 rounded-full" />
-                        <input type="file" className="hidden" name="file" onChange={(e)=>setFormData({...formData, pic: e.target.files[0]})}/>
+                        <input type="file" className="hidden" name="file" onChange={(e) => {
+                            const file = e.target.files[0]
+                            if (file.type && file.type.split("/")[0] === "image") {
+                                setFormData({...formData, pic: e.target.files[0]})
+                            } else {
+                                setDefault()
+                                toast.error("Select image file")
+                            }
+                        }}/>
                     </label>
                     <input value={formData.name} onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})} name="name" placeholder="Name" className="outline-none p-2 mb-2 bg-[#1c1c1c] rounded-xl w-full" />
                     <input value={formData.username} onChange={(e) => setFormData({...formData, [e.target.name]: e.target.value})} name="username" placeholder="Username" className="outline-none p-2 mb-2 bg-[#1c1c1c] rounded-xl w-full" />
